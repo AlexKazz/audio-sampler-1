@@ -8,6 +8,7 @@ import {
   clearActiveKey,
   setSelectedKey,
 } from "../store/spotifySlice";
+import Head from "next/head";
 
 const Home = () => {
   // const [isLoading, setIsLoading] = useState(false);
@@ -80,7 +81,13 @@ const Home = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </div>
-
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap"
+          rel="stylesheet"
+        />
+        {/* Other meta tags and link elements */}
+      </Head>
       <main className={styles.main}>
         <select
           className={styles.keySelect}
