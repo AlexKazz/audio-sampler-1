@@ -151,9 +151,9 @@ const Home = () => {
     };
   }, [trackInfo]);
 
-  useEffect(() => {
-    fetchPreviewUrls();
-  }, [selectedKey]);
+  // useEffect(() => {
+  //   fetchPreviewUrls();
+  // }, [selectedKey]);
 
   return (
     <div className={styles.container}>
@@ -185,6 +185,12 @@ const Home = () => {
           <option value="A#">A#</option>
           <option value="B">B</option>
         </select>
+        <button
+          className={styles.newAudioButton}
+          onClick={() => fetchPreviewUrls()}
+        >
+          Get new audio
+        </button>
 
         <div className={styles.grid}>
           {Object.keys(previewUrls).map((key) => (
