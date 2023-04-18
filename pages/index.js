@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "../styles/Home.module.css";
 import { useSelector, useDispatch } from "react-redux";
+import Loading from "../components/Loading";
 import {
   fetchPreviewUrls,
   setActiveKey,
@@ -9,6 +10,9 @@ import {
 } from "../store/spotifySlice";
 
 const Home = () => {
+  // const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useSelector((state) => state.spotify.isLoading);
+
   const dispatch = useDispatch();
   const activeKeys = useSelector((state) => state.spotify.activeKeys);
   const previewUrls = useSelector((state) => state.spotify.previewUrls);
@@ -103,27 +107,28 @@ const Home = () => {
         >
           Get new audio
         </button>
-
+        {isLoading && <Loading />}
         <div className={styles.grid}>
-          {Object.keys(previewUrls).map((key) => (
-            <div key={key} className={styles.buttonContainer}>
-              <button
-                className={`${styles.keyButton} ${
-                  activeKeys[key] ? styles.active : ""
-                }`}
-              >
-                {key}
-                <audio
-                  ref={(el) => (audioRefs.current[key] = el)}
-                  src={previewUrls[key]}
-                />
-              </button>
-              <div className={styles.trackInfo}>
-                <div>{trackInfo[key]?.artist}</div>
-                <div>{trackInfo[key]?.name}</div>
+          {previewUrls &&
+            Object.keys(previewUrls).map((key) => (
+              <div key={key} className={styles.buttonContainer}>
+                <button
+                  className={`${styles.keyButton} ${
+                    activeKeys[key] ? styles.active : ""
+                  }`}
+                >
+                  {key}
+                  <audio
+                    ref={(el) => (audioRefs.current[key] = el)}
+                    src={previewUrls[key]}
+                  />
+                </button>
+                <div className={styles.trackInfo}>
+                  <div>{trackInfo[key]?.artist}</div>
+                  <div>{trackInfo[key]?.name}</div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </main>
     </div>

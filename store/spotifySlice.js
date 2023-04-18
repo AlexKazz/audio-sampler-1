@@ -78,7 +78,7 @@ export const fetchPreviewUrls = createAsyncThunk(
         trackInfo[i] = { artist: track.artists[0].name, name: track.name };
       }
 
-      return { previewUrls: urls, trackInfo: trackInfo };
+      return { previewUrls: urls, trackInfo: trackInfo, isLoading: false };
     } catch (error) {
       console.error("Error fetching random songs:", error);
     }
@@ -108,10 +108,19 @@ const spotifySlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(fetchPreviewUrls.fulfilled, (state, action) => {
-      state.previewUrls = action.payload.previewUrls;
-      state.trackInfo = action.payload.trackInfo;
-    });
+    // builder.addCase(fetchPreviewUrls.fulfilled, (state, action) => {
+    //   state.previewUrls = action.payload.previewUrls;
+    //   state.trackInfo = action.payload.trackInfo;
+    // });
+    builder
+      .addCase(fetchPreviewUrls.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchPreviewUrls.fulfilled, (state, action) => {
+        state.previewUrls = action.payload.previewUrls;
+        state.trackInfo = action.payload.trackInfo;
+        state.isLoading = action.payload.isLoading;
+      });
   },
 });
 
