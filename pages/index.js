@@ -71,6 +71,16 @@ const Home = () => {
     };
   }, [selectedKey]);
 
+  const handleClick = (key) => {
+    if (audioRefs.current[key]) {
+      audioRefs.current[key].currentTime = 0;
+      audioRefs.current[key].play();
+      setTimeout(() => {
+        audioRefs.current[key].pause();
+      }, 1000);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div>
@@ -123,6 +133,7 @@ const Home = () => {
                   className={`${styles.keyButton} ${
                     activeKeys[key] ? styles.active : ""
                   }`}
+                  onClick={() => handleClick(key)}
                 >
                   {key}
                   <audio
