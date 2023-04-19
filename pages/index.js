@@ -7,6 +7,9 @@ import {
   setActiveKey,
   clearActiveKey,
   setSelectedKey,
+  fetchRandomPreviewUrl,
+  updatePreviewUrl,
+  updateTrackInfo,
 } from "../store/spotifySlice";
 import Head from "next/head";
 
@@ -81,6 +84,19 @@ const Home = () => {
     }
   };
 
+  const changeAudio = async (key) => {
+    const actionResult = await dispatch(fetchRandomPreviewUrl(key));
+    console.log("action result", actionResult);
+    const {
+      key: fetchedKey,
+      previewUrl: newPreviewUrl,
+      trackInfo,
+    } = actionResult.payload;
+
+    dispatch(updatePreviewUrl({ key: fetchedKey, newPreviewUrl }));
+    dispatch(updateTrackInfo({ key: fetchedKey, trackInfo })); // Update the track information in the state
+  };
+
   return (
     <div className={styles.container}>
       <div>
@@ -129,6 +145,12 @@ const Home = () => {
           {previewUrls &&
             Object.keys(previewUrls).map((key) => (
               <div key={key} className={styles.buttonContainer}>
+                <button
+                  className={styles.changeButton}
+                  onClick={() => changeAudio(key)}
+                >
+                  Change
+                </button>
                 <button
                   className={`${styles.keyButton} ${
                     activeKeys[key] ? styles.active : ""

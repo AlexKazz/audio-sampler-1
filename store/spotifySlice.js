@@ -1,5 +1,5 @@
 // store/spotifySlice.js
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import randomElement from "../utils/randomElement";
 
@@ -17,6 +17,8 @@ const keyMapping = {
   "A#": 10,
   B: 11,
 };
+
+export const updateTrackInfo = createAction("spotify/updateTrackInfo");
 
 // Define the async action for fetching preview URLs
 export const fetchPreviewUrls = createAsyncThunk(
@@ -92,6 +94,18 @@ const initialState = {
   selectedKey: "C",
 };
 
+export const fetchRandomPreviewUrl = createAsyncThunk(
+  "spotify/fetchRandomPreviewUrl",
+  async (key) => {
+    const response = await axios.get(`/api/random_preview?selectedKey=${key}`);
+    const previewUrl = response.data.previewUrl;
+    const trackInfo = response.data.trackInfo;
+    return { key, previewUrl, trackInfo };
+  }
+);
+
+export const updatePreviewUrl = createAction("spotify/updatePreviewUrl");
+
 const spotifySlice = createSlice({
   name: "spotify",
   initialState,
@@ -108,10 +122,6 @@ const spotifySlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    // builder.addCase(fetchPreviewUrls.fulfilled, (state, action) => {
-    //   state.previewUrls = action.payload.previewUrls;
-    //   state.trackInfo = action.payload.trackInfo;
-    // });
     builder
       .addCase(fetchPreviewUrls.pending, (state) => {
         state.isLoading = true;
@@ -120,6 +130,14 @@ const spotifySlice = createSlice({
         state.previewUrls = action.payload.previewUrls;
         state.trackInfo = action.payload.trackInfo;
         state.isLoading = action.payload.isLoading;
+      })
+      .addCase(updatePreviewUrl, (state, action) => {
+        const { key, newPreviewUrl } = action.payload;
+        state.previewUrls[key] = newPreviewUrl;
+      })
+      .addCase(updateTrackInfo, (state, action) => {
+        const { key, trackInfo } = action.payload; // Get the key from the action payload
+        state.trackInfo[key] = trackInfo; // Update only the track information for the specific key
       });
   },
 });
