@@ -68,12 +68,12 @@
   justify-content: center;
   background-color: #444; /* Darker background for the button */
   color: #fff; /* White text color */
-  border: 1px solid #1DB954; /* Add a thin border color to the button */
+  border: 2px solid #1DB954; /* Add a thin border color to the button */
   width: 50px;
   height: 50px;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 24px;
-  margin-bottom: 0.5rem;
+  margin-bottom: .5rem;
 }
 
 .keyButton:active,
@@ -81,14 +81,21 @@
   background-color: #1DB954;
 }
 
-.keyButton:focus {
+.keyButton:hover {
   outline: none;
+  background-color: #1DB954
 }
 
 .trackInfo {
   font-size: 12px;
   text-align: center;
   color: #fff; /* White text color */
+  width: 150px; /* Set a fixed width */
+  height: 60px; /* Set a fixed height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-wrap: break-word; /* Allow long words to break to the next line */
 }
 
 .newAudioButton {
@@ -161,4 +168,9 @@
   }
 }
 
+@media screen and (max-width: 480px) {
+  .trackInfo {
+    width: 120px; /* Set a smaller fixed width for mobile */
+  }
+}
 
