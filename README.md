@@ -6,7 +6,7 @@
 <h1 align="center">Spotify Audio Sampler</h1>
 
 <p align="center">
-<a href="https://audio-sampler-1-klsj6tdjj-alexkazz.vercel.app/">Try It Out Here!</a>
+<a href="https://audio-sampler-1.vercel.app/">Try It Out Here!</a>
 </p>
 
 <p align="center">
