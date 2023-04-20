@@ -11,7 +11,6 @@ import {
   updatePreviewUrl,
   updateTrackInfo,
 } from "../store/spotifySlice";
-import Head from "next/head";
 
 const Home = () => {
   // const [isLoading, setIsLoading] = useState(false);
@@ -98,7 +97,7 @@ const Home = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="bg-custom-black min-h-screen max-w-full min-w-full p-10">
       <div>
         <title>Spotify Music Sampler</title>
         <meta
@@ -107,22 +106,15 @@ const Home = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </div>
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
-      <main className={styles.main}>
+      <main className="flex flex-col justify-center items-center font-fell">
         <p className="mb-10 text-white text-2xl">Spotify Music Sampler</p>
-        <p className="mb-10 text-white text-center">
+        <p className="mb-10 text-white text-center italic">
           Press the corresponding keys on your keyboard to play a short audio
           clip from Spotify.
         </p>
         <div>
           <span className="text-white mr-2">Musical Key: </span>
           <select
-            className={styles.keySelect}
             value={selectedKey}
             onChange={(e) => dispatch(setSelectedKey(e.target.value))}
           >
@@ -142,24 +134,26 @@ const Home = () => {
         </div>
 
         <button
-          className={styles.newAudioButton}
+          className="bg-custom-green text-white text-sm font-bold p-2 rounded m-4 hover:bg-green-300"
           onClick={() => dispatch(fetchPreviewUrls(selectedKey))}
         >
           Get New Audio
         </button>
         {isLoading && <Loading />}
-        <div className={styles.grid}>
+        <div className="grid lg:grid-cols-5 grid-cols-3">
           {previewUrls &&
             Object.keys(previewUrls).map((key) => (
-              <div key={key} className={styles.buttonContainer}>
+              <div key={key} className="flex flex-col items-center mb-4 mx-2">
                 <button
-                  className={styles.changeButton}
+                  className="bg-custom-green text-white text-xs p-2 rounded-full m-2 hover:bg-green-300"
                   onClick={() => changeAudio(key)}
                 >
                   Change
                 </button>
                 <button
-                  className={`${styles.keyButton} ${
+                  className={`${
+                    styles.keyButton
+                  } flex items-center justify-center bg-neutral-700 text-white border-2 border-custom-green rounded-xl mb-2 w-12 h-12 text-2xl hover:bg-green-500 focus:bg-custom-green active:bg-custom-green ${
                     activeKeys[key] ? styles.active : ""
                   }`}
                   onClick={() => handleClick(key)}
@@ -170,7 +164,7 @@ const Home = () => {
                     src={previewUrls[key]}
                   />
                 </button>
-                <div className={styles.trackInfo}>
+                <div className="flex flex-col justify-center text-white text-xs text-center max-h-fit w-36 mx-5 px-5 whitespace-break-spaces">
                   <div>{trackInfo[key]?.artist}</div>
                   <div>{trackInfo[key]?.name}</div>
                 </div>
