@@ -115,7 +115,7 @@ const Home = () => {
       </Head>
       <main className={styles.main}>
         <p className="mb-10 text-white text-2xl">Spotify Music Sampler</p>
-        <p className="mb-10 text-white">
+        <p className="mb-10 text-white text-center">
           Press the corresponding keys on your keyboard to play a short audio
           clip from Spotify.
         </p>
