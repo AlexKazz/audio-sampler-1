@@ -94,13 +94,13 @@ const Home = () => {
     } = actionResult.payload;
 
     dispatch(updatePreviewUrl({ key: fetchedKey, newPreviewUrl }));
-    dispatch(updateTrackInfo({ key: fetchedKey, trackInfo })); // Update the track information in the state
+    dispatch(updateTrackInfo({ key: fetchedKey, trackInfo }));
   };
 
   return (
     <div className={styles.container}>
       <div>
-        <title>Random Music Player</title>
+        <title>Spotify Music Sampler</title>
         <meta
           name="description"
           content="Play random 1-second music snippets"
@@ -112,33 +112,40 @@ const Home = () => {
           href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap"
           rel="stylesheet"
         />
-        {/* Other meta tags and link elements */}
       </Head>
       <main className={styles.main}>
-        <select
-          className={styles.keySelect}
-          value={selectedKey}
-          onChange={(e) => dispatch(setSelectedKey(e.target.value))}
-        >
-          <option value="C">C</option>
-          <option value="C#">C#</option>
-          <option value="D">D</option>
-          <option value="D#">D#</option>
-          <option value="E">E</option>
-          <option value="F">F</option>
-          <option value="F#">F#</option>
-          <option value="G">G</option>
-          <option value="G#">G#</option>
-          <option value="A">A</option>
-          <option value="A#">A#</option>
-          <option value="B">B</option>
-        </select>
+        <p className="mb-10 text-white text-2xl">Spotify Music Sampler</p>
+        <p className="mb-10 text-white">
+          Press the corresponding keys on your keyboard to play a short audio
+          clip from Spotify.
+        </p>
+        <div>
+          <span className="text-white mr-2">Musical Key: </span>
+          <select
+            className={styles.keySelect}
+            value={selectedKey}
+            onChange={(e) => dispatch(setSelectedKey(e.target.value))}
+          >
+            <option value="C">C</option>
+            <option value="C#">C#</option>
+            <option value="D">D</option>
+            <option value="D#">D#</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="F#">F#</option>
+            <option value="G">G</option>
+            <option value="G#">G#</option>
+            <option value="A">A</option>
+            <option value="A#">A#</option>
+            <option value="B">B</option>
+          </select>
+        </div>
 
         <button
           className={styles.newAudioButton}
           onClick={() => dispatch(fetchPreviewUrls(selectedKey))}
         >
-          Get new audio
+          Get New Audio
         </button>
         {isLoading && <Loading />}
         <div className={styles.grid}>
