@@ -44,9 +44,6 @@ Turn your keyboard into a Spotify music sampler with the click of a button.
 • Information including artist, song title, and the song's preview url are returned.
 <br/>
 <br/>
-• The track ID is then used to make a second Musixmatch API call to grab the <a href="https://developer.musixmatch.com/documentation/api-reference/track-snippet-get">lyric snippet</a>.
-<br/>
-<br/>
 • Spotify Audio Sampler generates a random index when fetching data so different songs are returned for each API call.
 <br/>
 <br/>
@@ -72,10 +69,10 @@ Turn your keyboard into a Spotify music sampler with the click of a button.
 - [x] Develop the API logic
 - [x] Jam out with Spotify audio samples
 - [x] Replace React Hooks with Redux Toolkit
-- [ ] Refactor parts of codebase to improve readability & efficiency
-- [ ] Fix data fetching errors where song doesn't play / artist & song title are incorrect
+- [ ] Fix data fetching errors such as playback issues and incorrect artist & track information
 - [ ] Add other data fetching parameters (genre, sample length, etc.)
 - [ ] Add custom key assignments
+- [ ] Refactor parts of codebase to improve readability & efficiency
 
 <p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
@@ -97,8 +94,8 @@ Don't forget to give the project a star! Thanks again!
 ## Run Locally
 
 Getting started is easy! Just follow the steps below to get a local copy up and running.
-<br/>
-\_You will need to create a Spotify account for your own client ID and client secret.
+<br />
+(_You will need to have Spotify account for your own client ID and client secret_)
 
 ### Prerequisites
 
@@ -110,24 +107,37 @@ Getting started is easy! Just follow the steps below to get a local copy up and 
 
 ### Installation
 
-1. Clone the repo
+1. Sign up for a <a href='https://open.spotify.com'>Spotify account</a> (_if you already have one, skip this step_)
+   <br/>
+   <br/>
+2. Click "Create app" on the <a href="https://developer.spotify.com/dashboard">Spotify developer dashboard</a>
+   <br/>
+   <br/>
+3. Add your app details (_the Redirect URI should be `http://localhost:<PORT>/callback`_ )
+   <br/>
+   <br/>
+4. Clone the repo
    ```sh
    git clone git@github.com:AlexKazz/audio-sampler-1.git
    ```
-2. Install NPM packages
+5. Install NPM packages
    ```sh
    npm install
    ```
-3. Create .env file in root folder containing the following:
+6. Create .env file in root folder containing the following:
+
+   (_your client ID and secret can be found in your app settings through the <a href="https://developer.spotify.com/dashboard">Spotify developer dashboard</a>_)
+
    ```sh
    NEXT_PUBLIC_SPOTIFY_CLIENT_ID=<your Spotify client ID>
    SPOTIFY_CLIENT_SECRET=<your Spotify client secret>
    ```
-4. Start the servers
+
+7. Start the servers
    ```js
    npm run dev
    ```
-5. Open the app in your browser
+8. Open the app in your browser
    ```sh
     http://localhost:3000/
    ```
