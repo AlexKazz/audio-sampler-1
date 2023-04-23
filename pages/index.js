@@ -13,7 +13,6 @@ import {
 } from "../store/spotifySlice";
 
 const Home = () => {
-  // const [isLoading, setIsLoading] = useState(false);
   const isLoading = useSelector((state) => state.spotify.isLoading);
 
   const dispatch = useDispatch();
@@ -38,7 +37,6 @@ const Home = () => {
       if (validKeys.includes(e.key)) {
         dispatch(setActiveKey(e.key));
 
-        // Pause all other audio elements
         for (let i = 0; i < 10; i++) {
           if (e.key !== i.toString() && audioRefs.current[i]) {
             audioRefs.current[i].pause();
@@ -85,7 +83,7 @@ const Home = () => {
 
   const changeAudio = async (key) => {
     const actionResult = await dispatch(fetchRandomPreviewUrl(key));
-    console.log("action result", actionResult);
+
     const {
       key: fetchedKey,
       previewUrl: newPreviewUrl,
@@ -107,7 +105,8 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </div>
       <main className="flex flex-col justify-center items-center font-fell">
-        <p className="mb-10 text-white text-2xl">Spotify Music Sampler</p>
+        <p className="text-white text-2xl mb-10">Spotify Music Sampler</p>
+
         <p className="mb-10 text-white text-center italic">
           Press the corresponding keys on your keyboard to play a short audio
           clip from Spotify.

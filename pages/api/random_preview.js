@@ -1,8 +1,6 @@
 import { getAccessToken } from "../../lib/spotify";
 import axios from "axios";
 import randomElement from "../../utils/randomElement";
-import { fetchPreviewUrls } from "@/store/spotifySlice";
-// import { keyMapping } from "../../store/spotifySlice";
 
 const keyMapping = {
   C: 0,
@@ -71,17 +69,15 @@ const handler = async (req, res) => {
         track = randomElement(tracks);
         previewUrl = track.preview_url;
         if (!previewUrl) {
-          tracks.splice(tracks.indexOf(track), 1); // Remove the track without preview_url from the list
+          tracks.splice(tracks.indexOf(track), 1);
         }
       }
 
       if (previewUrl) {
-        res
-          .status(200)
-          .json({
-            previewUrl,
-            trackInfo: { artist: track.artists[0].name, name: track.name },
-          });
+        res.status(200).json({
+          previewUrl,
+          trackInfo: { artist: track.artists[0].name, name: track.name },
+        });
       } else {
         res.status(500).json({ error: "No tracks with preview URLs found" });
       }

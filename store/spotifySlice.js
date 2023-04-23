@@ -1,4 +1,3 @@
-// store/spotifySlice.js
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import randomElement from "../utils/randomElement";
@@ -20,7 +19,6 @@ const keyMapping = {
 
 export const updateTrackInfo = createAction("spotify/updateTrackInfo");
 
-// Define the async action for fetching preview URLs
 export const fetchPreviewUrls = createAsyncThunk(
   "spotify/fetchPreviewUrls",
   async (selectedKey) => {

@@ -1,4 +1,3 @@
-// store/store.js
 import { configureStore } from "@reduxjs/toolkit";
 import spotifyReducer from "./spotifySlice";
 
