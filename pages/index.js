@@ -11,6 +11,7 @@ import {
   updatePreviewUrl,
   updateTrackInfo,
 } from "../store/spotifySlice";
+import Sidebar from "@/components/Sidebar";
 
 const Home = () => {
   const isLoading = useSelector((state) => state.spotify.isLoading);
@@ -170,6 +171,7 @@ const Home = () => {
               </div>
             ))}
         </div>
+        <Sidebar />
       </main>
     </div>
   );
