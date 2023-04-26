@@ -98,7 +98,7 @@ const Home = () => {
   return (
     <div className="bg-custom-black min-h-screen max-w-full min-w-full p-10">
       <div>
-        <title>Spotify Music Sampler</title>
+        <title>Spotify Audio Sampler</title>
         <meta
           name="description"
           content="Play random 1-second music snippets"
@@ -106,7 +106,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </div>
       <main className="flex flex-col justify-center items-center font-fell">
-        <p className="text-white text-2xl mb-10">Spotify Music Sampler</p>
+        <p className="text-white text-2xl mb-10">Spotify Audio Sampler</p>
 
         <p className="mb-10 text-white text-center italic">
           Press the corresponding keys on your keyboard to play a short audio

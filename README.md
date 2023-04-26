@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-Turn your keyboard into a Spotify music sampler with the click of a button.
+Turn your keyboard into a Spotify audio sampler with the click of a button.
 <br/>
 (and drive your coworkers insane)
 </p>

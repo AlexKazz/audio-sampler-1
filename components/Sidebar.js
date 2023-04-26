@@ -68,7 +68,7 @@ const Sidebar = ({ theme }) => {
               rel="noreferrer"
               className="hover:text-custom-green underline"
             >
-              Learn more about Spotify Music Sampler on GitHub
+              Learn more about Spotify Audio Sampler on GitHub
             </a>
           </p>
         </h3>
