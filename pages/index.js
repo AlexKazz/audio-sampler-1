@@ -12,10 +12,10 @@ import {
   updateTrackInfo,
 } from "../store/spotifySlice";
 import Sidebar from "@/components/Sidebar";
+import SaveSamples from "@/components/SaveSamples";
 
 const Home = () => {
   const isLoading = useSelector((state) => state.spotify.isLoading);
-
   const dispatch = useDispatch();
   const activeKeys = useSelector((state) => state.spotify.activeKeys);
   const previewUrls = useSelector((state) => state.spotify.previewUrls);
@@ -132,7 +132,7 @@ const Home = () => {
             <option value="B">B</option>
           </select>
         </div>
-
+        <SaveSamples />
         <button
           className="bg-custom-green text-white text-sm font-bold p-2 rounded m-4 hover:bg-green-300"
           onClick={() => dispatch(fetchPreviewUrls(selectedKey))}
