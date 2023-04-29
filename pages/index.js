@@ -13,6 +13,7 @@ import {
 } from "../store/spotifySlice";
 import Sidebar from "@/components/Sidebar";
 import SaveSamples from "@/components/SaveSamples";
+import LoadSamples from "@/components/LoadSamples";
 
 const Home = () => {
   const isLoading = useSelector((state) => state.spotify.isLoading);
@@ -132,7 +133,10 @@ const Home = () => {
             <option value="B">B</option>
           </select>
         </div>
-        <SaveSamples />
+        <div className="flex">
+          <SaveSamples />
+          <LoadSamples />
+        </div>
         <button
           className="bg-custom-green text-white text-sm font-bold p-2 rounded m-4 hover:bg-green-300"
           onClick={() => dispatch(fetchPreviewUrls(selectedKey))}

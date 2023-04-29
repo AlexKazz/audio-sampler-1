@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Modal = ({ showModal, setShowModal }) => {
   const [inputValue, setInputValue] = useState("");
+  const sampleState = useSelector((state) => state.spotify);
 
   if (!showModal) {
     return null;
@@ -24,8 +26,10 @@ const Modal = ({ showModal, setShowModal }) => {
           <button
             className="bg-custom-green text-white px-4 py-2 rounded mt-4 mr- hover:bg-green-400"
             onClick={() => {
-              // Add your save logic here
+              localStorage.setItem(inputValue, JSON.stringify(sampleState));
+              setInputValue("");
               console.log(inputValue);
+              console.log(sampleState);
               setShowModal(false);
             }}
           >
