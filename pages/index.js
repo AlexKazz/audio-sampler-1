@@ -133,10 +133,7 @@ const Home = () => {
             <option value="B">B</option>
           </select>
         </div>
-        <div className="flex">
-          <SaveSamples />
-          <LoadSamples />
-        </div>
+
         <button
           className="bg-custom-green text-white text-sm font-bold p-2 rounded m-4 hover:bg-green-300"
           onClick={() => dispatch(fetchPreviewUrls(selectedKey))}
@@ -174,6 +171,10 @@ const Home = () => {
                 </div>
               </div>
             ))}
+        </div>
+        <div className="flex">
+          <SaveSamples />
+          <LoadSamples />
         </div>
         <Sidebar />
       </main>

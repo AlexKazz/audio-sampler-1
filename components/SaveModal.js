@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-const Modal = ({ showModal, setShowModal }) => {
+const SaveModal = ({ showModal, setShowModal }) => {
   const [inputValue, setInputValue] = useState("");
   const sampleState = useSelector((state) => state.spotify);
 
@@ -12,9 +12,7 @@ const Modal = ({ showModal, setShowModal }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-        <h2 className="text-xl mb-4 text-center">
-          Please name your sample set:
-        </h2>
+        <h2 className="text-xl mb-4 text-center">Name your sample set:</h2>
         <input
           type="text"
           className="border border-gray-300 p-2 w-full mb-4"
@@ -47,4 +45,4 @@ const Modal = ({ showModal, setShowModal }) => {
   );
 };
 
-export default Modal;
+export default SaveModal;

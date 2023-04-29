@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import Modal from "./Modal";
+import SaveModal from "./SaveModal";
 
 const SaveSamples = () => {
   const [showModal, setShowModal] = useState(false);
@@ -13,7 +13,7 @@ const SaveSamples = () => {
       >
         Save Samples
       </button>
-      <Modal showModal={showModal} setShowModal={setShowModal} />
+      <SaveModal showModal={showModal} setShowModal={setShowModal} />
     </div>
   );
 };
