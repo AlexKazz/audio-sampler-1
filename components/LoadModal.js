@@ -35,7 +35,7 @@ const LoadModal = ({ showModal, setShowModal }) => {
   };
 
   const sortItemsByOldest = (items) => {
-    return items.sort((a, b) => a.timestamp - b.timestamp);
+    return items.sort((a, b) => b.timestamp - a.timestamp);
   };
 
   if (!showModal) {
