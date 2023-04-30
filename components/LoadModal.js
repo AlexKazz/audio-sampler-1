@@ -28,34 +28,63 @@ const LoadModal = ({ showModal, setShowModal }) => {
     setShowModal(false);
   };
 
+  const handleDelete = (key) => {
+    localStorage.removeItem(key);
+    setItems(items.filter((item) => item.key !== key));
+  };
+
   if (!showModal) {
     return null;
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 h-1/2 flex flex-col">
         <h2 className="text-xl mb-4 text-center">Select sample set to load:</h2>
-        <ul>
-          {items.map((item) => (
-            <li
-              key={item.key}
-              onClick={() => handleClick(item.value)}
-              className="hover:bg-custom-green hover:text-white"
-            >
-              {item.key}
-            </li>
-          ))}
-        </ul>
-        <div className="flex justify-evenly">
+        <div className="h-2/3 overflow-auto">
+          <ul className="space-y-2">
+            {items.map((item) => (
+              <div
+                key={item.key}
+                className="group flex justify-between hover:bg-slate-200 p-2 border-b-0"
+              >
+                <li onClick={() => handleClick(item.value)} className="">
+                  {item.key}
+                </li>
+                <div className="hidden group-hover:block">
+                  {" "}
+                  <button
+                    className="border border-black text-black hover:bg-slate-400"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleClick(item.value);
+                    }}
+                  >
+                    Load
+                  </button>
+                  <button
+                    className="border border-black text-black rounded ml-1 hover:bg-slate-400"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(item.key);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </ul>
+        </div>
+        <div className="flex justify-evenly mt-4">
           <button
-            className="border border-black text-black px-4 py-2 rounded mt-4 hover:bg-slate-400"
+            className="border border-black text-black px-4 py-2 rounded hover:bg-slate-400"
             onClick={() => setShowModal(false)}
           >
             Cancel
           </button>
           <button
-            className="border border-black text-black px-4 py-2 rounded mt-4 hover:bg-slate-400"
+            className="border border-black text-black px-4 py-2 rounded hover:bg-slate-400"
             onClick={() => console.log(items)}
           >
             Log Items
