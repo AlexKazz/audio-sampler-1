@@ -117,6 +117,12 @@ const spotifySlice = createSlice({
     setSelectedKey: (state, action) => {
       state.selectedKey = action.payload;
     },
+    updateState: (state, action) => {
+      state.activeKeys = action.payload.activeKeys;
+      state.previewUrls = action.payload.previewUrls;
+      state.trackInfo = action.payload.trackInfo;
+      state.selectedKey = action.payload.selectedKey;
+    },
   },
 
   extraReducers: (builder) => {
@@ -140,7 +146,7 @@ const spotifySlice = createSlice({
   },
 });
 
-export const { setActiveKey, clearActiveKey, setSelectedKey } =
+export const { setActiveKey, clearActiveKey, setSelectedKey, updateState } =
   spotifySlice.actions;
 
 export default spotifySlice.reducer;

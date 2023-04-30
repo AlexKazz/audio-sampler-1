@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateState } from "../store/spotifySlice";
 
 const LoadModal = ({ showModal, setShowModal }) => {
   const [items, setItems] = useState([]);
   const sampleState = useSelector((state) => state.spotify);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getAllLocalStorageItems = () => {
@@ -21,6 +23,11 @@ const LoadModal = ({ showModal, setShowModal }) => {
     setItems(getAllLocalStorageItems());
   }, []);
 
+  const handleClick = (value) => {
+    dispatch(updateState(value));
+    setShowModal(false);
+  };
+
   if (!showModal) {
     return null;
   }
@@ -31,7 +38,13 @@ const LoadModal = ({ showModal, setShowModal }) => {
         <h2 className="text-xl mb-4 text-center">Select sample set to load:</h2>
         <ul>
           {items.map((item) => (
-            <li key={item.key}>{item.key}</li>
+            <li
+              key={item.key}
+              onClick={() => handleClick(item.value)}
+              className="hover:bg-custom-green hover:text-white"
+            >
+              {item.key}
+            </li>
           ))}
         </ul>
         <div className="flex justify-evenly">

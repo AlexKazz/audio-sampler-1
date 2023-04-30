@@ -5,14 +5,14 @@ import LoadModal from "./LoadModal";
 const LoadSamples = ({ items, updateItems }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const loadSavedSampleState = (key) => {
-    const savedState = localStorage.getItem(key);
-    if (savedState) {
-      const parsedState = JSON.parse(savedState);
-    } else {
-      console.error("No saved state found with key:", key);
-    }
-  };
+  // const loadSavedSampleState = (key) => {
+  //   const savedState = localStorage.getItem(key);
+  //   if (savedState) {
+  //     const parsedState = JSON.parse(savedState);
+  //   } else {
+  //     console.error("No saved state found with key:", key);
+  //   }
+  // };
 
   return (
     <div className="m-4">
