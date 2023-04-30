@@ -14,7 +14,8 @@ const LoadModal = ({ showModal, setShowModal }) => {
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         const value = JSON.parse(localStorage.getItem(key));
-        items.push({ key, value });
+        const timestamp = value.timestamp;
+        items.push({ key, value, timestamp });
       }
 
       return items;
@@ -33,6 +34,10 @@ const LoadModal = ({ showModal, setShowModal }) => {
     setItems(items.filter((item) => item.key !== key));
   };
 
+  const sortItemsByOldest = (items) => {
+    return items.sort((a, b) => a.timestamp - b.timestamp);
+  };
+
   if (!showModal) {
     return null;
   }
@@ -43,7 +48,7 @@ const LoadModal = ({ showModal, setShowModal }) => {
         <h2 className="text-xl mb-4 text-center">Select sample set to load:</h2>
         <div className="h-2/3 overflow-auto">
           <ul className="space-y-2">
-            {items.map((item) => (
+            {sortItemsByOldest(items).map((item) => (
               <div
                 key={item.key}
                 className="group flex justify-between hover:bg-slate-200 p-2 border-b-0"
