@@ -47,11 +47,11 @@ const LoadModal = ({ showModal, setShowModal }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 h-1/2 flex flex-col">
         <h2 className="text-xl mb-4 text-center">Select sample set to load:</h2>
         <div className="h-2/3 overflow-auto">
-          <ul className="space-y-2">
+          <ul className="">
             {sortItemsByOldest(items).map((item) => (
               <div
                 key={item.key}
-                className="group flex justify-between hover:bg-slate-200 p-2 border-b-0"
+                className="group flex justify-between hover:bg-slate-200 p-2 border-b-2"
               >
                 <li onClick={() => handleClick(item.value)} className="">
                   {item.key}
@@ -59,7 +59,7 @@ const LoadModal = ({ showModal, setShowModal }) => {
                 <div className="hidden group-hover:block">
                   {" "}
                   <button
-                    className="border border-black text-black hover:bg-slate-400"
+                    className="rounded text-black hover:underline"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleClick(item.value);
@@ -68,7 +68,7 @@ const LoadModal = ({ showModal, setShowModal }) => {
                     Load
                   </button>
                   <button
-                    className="border border-black text-black rounded ml-1 hover:bg-slate-400"
+                    className=" text-black rounded ml-4 hover:underline"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDelete(item.key);
@@ -83,17 +83,17 @@ const LoadModal = ({ showModal, setShowModal }) => {
         </div>
         <div className="flex justify-evenly mt-4">
           <button
-            className="border border-black text-black px-4 py-2 rounded hover:bg-slate-400"
+            className="border border-black text-black px-4 py-2 rounded hover:bg-slate-200"
             onClick={() => setShowModal(false)}
           >
             Cancel
           </button>
-          <button
+          {/* <button
             className="border border-black text-black px-4 py-2 rounded hover:bg-slate-400"
             onClick={() => console.log(items)}
           >
             Log Items
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
