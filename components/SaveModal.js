@@ -26,8 +26,6 @@ const SaveModal = ({ showModal, setShowModal }) => {
             onClick={() => {
               localStorage.setItem(inputValue, JSON.stringify(sampleState));
               setInputValue("");
-              console.log(inputValue);
-              console.log(sampleState);
               setShowModal(false);
             }}
           >

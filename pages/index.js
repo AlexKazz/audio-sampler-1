@@ -16,6 +16,7 @@ import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
 
 const Home = () => {
+  const [items, setItems] = useState([]);
   const isLoading = useSelector((state) => state.spotify.isLoading);
   const dispatch = useDispatch();
   const activeKeys = useSelector((state) => state.spotify.activeKeys);
@@ -23,6 +24,18 @@ const Home = () => {
   const trackInfo = useSelector((state) => state.spotify.trackInfo);
   const selectedKey = useSelector((state) => state.spotify.selectedKey);
   const audioRefs = useRef({});
+
+  const updateItems = () => {
+    const newItems = [];
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      const value = JSON.parse(localStorage.getItem(key));
+      newItems.push({ key, value });
+    }
+
+    setItems(newItems);
+  };
 
   const validKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
@@ -173,8 +186,8 @@ const Home = () => {
             ))}
         </div>
         <div className="flex">
-          <SaveSamples />
-          <LoadSamples />
+          <SaveSamples items={items} updateItems={updateItems} />
+          <LoadSamples items={items} updateItems={updateItems} />
         </div>
         <Sidebar />
       </main>
