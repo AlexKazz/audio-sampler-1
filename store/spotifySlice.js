@@ -90,6 +90,7 @@ const initialState = {
   previewUrls: {},
   trackInfo: {},
   selectedKey: "C",
+  items: [],
 };
 
 export const fetchRandomPreviewUrl = createAsyncThunk(
@@ -117,6 +118,22 @@ const spotifySlice = createSlice({
     setSelectedKey: (state, action) => {
       state.selectedKey = action.payload;
     },
+    updateState: (state, action) => {
+      state.activeKeys = action.payload.activeKeys;
+      state.previewUrls = action.payload.previewUrls;
+      state.trackInfo = action.payload.trackInfo;
+      state.selectedKey = action.payload.selectedKey;
+    },
+    updateItems: (state, action) => {
+      state.items = action.payload;
+    },
+    deleteItem: (state, action) => {
+      const keyToDelete = action.payload;
+      // Remove the item from local storage
+      localStorage.removeItem(keyToDelete);
+      // Remove the item from the Redux state
+      state.items = state.items.filter((item) => item.key !== keyToDelete);
+    },
   },
 
   extraReducers: (builder) => {
@@ -140,7 +157,13 @@ const spotifySlice = createSlice({
   },
 });
 
-export const { setActiveKey, clearActiveKey, setSelectedKey } =
-  spotifySlice.actions;
+export const {
+  setActiveKey,
+  clearActiveKey,
+  setSelectedKey,
+  updateState,
+  updateItems,
+  deleteItem,
+} = spotifySlice.actions;
 
 export default spotifySlice.reducer;
