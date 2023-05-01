@@ -1,28 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateState } from "../store/spotifySlice";
+import { updateState, deleteItem, updateItems } from "../store/spotifySlice";
+import { getAllLocalStorageItems } from "../utils/localStorageUtils";
 
 const LoadModal = ({ showModal, setShowModal }) => {
-  const [items, setItems] = useState([]);
   const sampleState = useSelector((state) => state.spotify);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const getAllLocalStorageItems = () => {
-      const items = [];
-
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        const value = JSON.parse(localStorage.getItem(key));
-        const timestamp = value.timestamp;
-        items.push({ key, value, timestamp });
-      }
-
-      return items;
-    };
-
-    setItems(getAllLocalStorageItems());
-  }, []);
+  const items = getAllLocalStorageItems();
 
   const handleClick = (value) => {
     dispatch(updateState(value));
@@ -31,7 +15,7 @@ const LoadModal = ({ showModal, setShowModal }) => {
 
   const handleDelete = (key) => {
     localStorage.removeItem(key);
-    setItems(items.filter((item) => item.key !== key));
+    dispatch(deleteItem(key));
   };
 
   const sortItemsByOldest = (items) => {
@@ -88,12 +72,6 @@ const LoadModal = ({ showModal, setShowModal }) => {
           >
             Cancel
           </button>
-          {/* <button
-            className="border border-black text-black px-4 py-2 rounded hover:bg-slate-400"
-            onClick={() => console.log(items)}
-          >
-            Log Items
-          </button> */}
         </div>
       </div>
     </div>

@@ -1,13 +1,26 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateItems } from "../store/spotifySlice";
+import { getAllLocalStorageItems } from "../utils/localStorageUtils";
 
 const SaveModal = ({ showModal, setShowModal }) => {
   const [inputValue, setInputValue] = useState("");
   const sampleState = useSelector((state) => state.spotify);
+  const dispatch = useDispatch();
 
   if (!showModal) {
     return null;
   }
+
+  const handleSave = () => {
+    const newState = { ...sampleState, timestamp: Date.now() };
+    localStorage.setItem(inputValue, JSON.stringify(newState));
+    setInputValue("");
+
+    // Dispatch the updateItems action to update the Redux state
+    const updatedItems = getAllLocalStorageItems();
+    dispatch(updateItems(updatedItems));
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">

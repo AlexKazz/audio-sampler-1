@@ -90,6 +90,7 @@ const initialState = {
   previewUrls: {},
   trackInfo: {},
   selectedKey: "C",
+  items: [],
 };
 
 export const fetchRandomPreviewUrl = createAsyncThunk(
@@ -123,6 +124,13 @@ const spotifySlice = createSlice({
       state.trackInfo = action.payload.trackInfo;
       state.selectedKey = action.payload.selectedKey;
     },
+    updateItems: (state, action) => {
+      state.items = action.payload;
+    },
+    deleteItem: (state, action) => {
+      const keyToDelete = action.payload;
+      state.items = state.items.filter((item) => item.key !== keyToDelete);
+    },
   },
 
   extraReducers: (builder) => {
@@ -146,7 +154,13 @@ const spotifySlice = createSlice({
   },
 });
 
-export const { setActiveKey, clearActiveKey, setSelectedKey, updateState } =
-  spotifySlice.actions;
+export const {
+  setActiveKey,
+  clearActiveKey,
+  setSelectedKey,
+  updateState,
+  updateItems,
+  deleteItem,
+} = spotifySlice.actions;
 
 export default spotifySlice.reducer;
