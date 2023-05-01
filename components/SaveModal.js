@@ -17,7 +17,6 @@ const SaveModal = ({ showModal, setShowModal }) => {
     localStorage.setItem(inputValue, JSON.stringify(newState));
     setInputValue("");
 
-    // Dispatch the updateItems action to update the Redux state
     const updatedItems = getAllLocalStorageItems();
     dispatch(updateItems(updatedItems));
   };

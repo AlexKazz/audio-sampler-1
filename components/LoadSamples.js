@@ -2,17 +2,8 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import LoadModal from "./LoadModal";
 
-const LoadSamples = ({ items, updateItems }) => {
+const LoadSamples = () => {
   const [showModal, setShowModal] = useState(false);
-
-  // const loadSavedSampleState = (key) => {
-  //   const savedState = localStorage.getItem(key);
-  //   if (savedState) {
-  //     const parsedState = JSON.parse(savedState);
-  //   } else {
-  //     console.error("No saved state found with key:", key);
-  //   }
-  // };
 
   return (
     <div className="m-4">
@@ -22,12 +13,7 @@ const LoadSamples = ({ items, updateItems }) => {
       >
         Load Samples
       </button>
-      <LoadModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        items={items}
-        updateItems={updateItems}
-      />
+      <LoadModal showModal={showModal} setShowModal={setShowModal} />
     </div>
   );
 };

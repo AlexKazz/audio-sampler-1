@@ -129,6 +129,9 @@ const spotifySlice = createSlice({
     },
     deleteItem: (state, action) => {
       const keyToDelete = action.payload;
+      // Remove the item from local storage
+      localStorage.removeItem(keyToDelete);
+      // Remove the item from the Redux state
       state.items = state.items.filter((item) => item.key !== keyToDelete);
     },
   },

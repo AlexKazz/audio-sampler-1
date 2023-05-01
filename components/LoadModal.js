@@ -5,8 +5,13 @@ import { getAllLocalStorageItems } from "../utils/localStorageUtils";
 
 const LoadModal = ({ showModal, setShowModal }) => {
   const sampleState = useSelector((state) => state.spotify);
+  const items = useSelector((state) => state.spotify.items);
   const dispatch = useDispatch();
-  const items = getAllLocalStorageItems();
+  // const items = getAllLocalStorageItems();
+  useEffect(() => {
+    const items = getAllLocalStorageItems();
+    dispatch(updateItems(items));
+  }, [dispatch]);
 
   const handleClick = (value) => {
     dispatch(updateState(value));
@@ -14,12 +19,12 @@ const LoadModal = ({ showModal, setShowModal }) => {
   };
 
   const handleDelete = (key) => {
-    localStorage.removeItem(key);
+    // localStorage.removeItem(key);
     dispatch(deleteItem(key));
   };
 
   const sortItemsByOldest = (items) => {
-    return items.sort((a, b) => b.timestamp - a.timestamp);
+    return [...items].sort((a, b) => b.timestamp - a.timestamp);
   };
 
   if (!showModal) {

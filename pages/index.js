@@ -10,19 +10,21 @@ import {
   fetchRandomPreviewUrl,
   updatePreviewUrl,
   updateTrackInfo,
+  updateItems,
 } from "../store/spotifySlice";
 import Sidebar from "@/components/Sidebar";
 import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
 
 const Home = () => {
-  const [items, setItems] = useState([]);
+  // const [items, setItems] = useState([]);
   const isLoading = useSelector((state) => state.spotify.isLoading);
   const dispatch = useDispatch();
   const activeKeys = useSelector((state) => state.spotify.activeKeys);
   const previewUrls = useSelector((state) => state.spotify.previewUrls);
   const trackInfo = useSelector((state) => state.spotify.trackInfo);
   const selectedKey = useSelector((state) => state.spotify.selectedKey);
+  const items = useSelector((state) => state.spotify.items);
   const audioRefs = useRef({});
 
   const updateItems = () => {
