@@ -34,14 +34,13 @@ const Sidebar = ({ theme }) => {
       >
         <h3 className="mt-10 text-lg font-fell">
           <p className="mb-5">
-            • Spotify Audio Sampler is meant to be a fun way to explore
+            • Spotify Audio Sampler is meant to be a fun way to explore{" "}
             <a
               href="https://youtu.be/grCMo2sykBs?t=31"
               target="_blank"
               rel="noreferrer"
               className="underline hover:text-custom-green"
             >
-              {" "}
               sampling music,
             </a>{" "}
             in a similar way to how hip-hop producers have used the{" "}
