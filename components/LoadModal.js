@@ -28,7 +28,7 @@ const LoadModal = ({ showModal, setShowModal }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 h-1/2 flex flex-col">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full sm:w-1/3 h-1/2 flex flex-col">
         <h2 className="text-xl mb-4 text-center">Select sample set to load:</h2>
         <div className="h-2/3 overflow-auto">
           <ul className="">
