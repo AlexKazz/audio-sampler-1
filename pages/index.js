@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import styles from "../styles/Home.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "../components/Loading";
@@ -17,7 +17,7 @@ import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
 
 const Home = () => {
-  // const [items, setItems] = useState([]);
+  const [sampleOverlap, setSampleOverlap] = useState(false);
   const isLoading = useSelector((state) => state.spotify.isLoading);
   const dispatch = useDispatch();
   const activeKeys = useSelector((state) => state.spotify.activeKeys);
@@ -43,21 +43,18 @@ const Home = () => {
 
   const hasMounted = useRef(false);
 
-  useEffect(() => {
-    if (!hasMounted.current) {
-      hasMounted.current = true;
-    } else {
-      dispatch(fetchPreviewUrls(selectedKey));
-    }
-
-    const handleKeyDown = (e) => {
+  const handleKeyDown = useCallback(
+    (e) => {
+      console.log("handleKeyDown executed");
       if (validKeys.includes(e.key)) {
         dispatch(setActiveKey(e.key));
 
-        for (let i = 0; i < 10; i++) {
-          if (e.key !== i.toString() && audioRefs.current[i]) {
-            audioRefs.current[i].pause();
-            audioRefs.current[i].currentTime = 0;
+        if (!sampleOverlap) {
+          for (let i = 0; i < 10; i++) {
+            if (e.key !== i.toString() && audioRefs.current[i]) {
+              audioRefs.current[i].pause();
+              audioRefs.current[i].currentTime = 0;
+            }
           }
         }
 
@@ -66,9 +63,13 @@ const Home = () => {
           audioRefs.current[e.key].play();
         }
       }
-    };
+    },
+    [selectedKey, sampleOverlap]
+  );
 
-    const handleKeyUp = (e) => {
+  const handleKeyUp = useCallback(
+    (e) => {
+      console.log("handleKeyUp executed");
       if (validKeys.includes(e.key)) {
         dispatch(clearActiveKey(e.key));
         if (audioRefs.current[e.key]) {
@@ -77,7 +78,16 @@ const Home = () => {
           }, 2000);
         }
       }
-    };
+    },
+    [selectedKey, sampleOverlap]
+  );
+
+  useEffect(() => {
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+    } else {
+      dispatch(fetchPreviewUrls(selectedKey));
+    }
 
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
@@ -88,13 +98,28 @@ const Home = () => {
     };
   }, [selectedKey]);
 
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [sampleOverlap]);
+
+  const sampleOverlapRef = useRef(sampleOverlap);
+  useEffect(() => {
+    sampleOverlapRef.current = sampleOverlap;
+  }, [sampleOverlap]);
+
   const handleClick = (key) => {
     if (audioRefs.current[key]) {
       audioRefs.current[key].currentTime = 0;
       audioRefs.current[key].play();
       setTimeout(() => {
         audioRefs.current[key].pause();
-      }, 1000);
+      }, 2000);
     }
   };
 
@@ -129,6 +154,14 @@ const Home = () => {
           clip from Spotify.
         </p>
         <div>
+          <label className="flex items-center text-white">
+            <span className="mr-2">Sample Overlap</span>
+            <input
+              type="checkbox"
+              checked={sampleOverlap}
+              onChange={() => setSampleOverlap(!sampleOverlap)}
+            />
+          </label>
           <span className="text-white mr-2">Musical Key: </span>
           <select
             value={selectedKey}
