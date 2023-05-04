@@ -45,7 +45,6 @@ const Home = () => {
 
   const handleKeyDown = useCallback(
     (e) => {
-      console.log("handleKeyDown executed");
       if (validKeys.includes(e.key)) {
         dispatch(setActiveKey(e.key));
 
@@ -69,7 +68,6 @@ const Home = () => {
 
   const handleKeyUp = useCallback(
     (e) => {
-      console.log("handleKeyUp executed");
       if (validKeys.includes(e.key)) {
         dispatch(clearActiveKey(e.key));
         if (audioRefs.current[e.key]) {
@@ -154,14 +152,28 @@ const Home = () => {
           clip from Spotify.
         </p>
         <div>
-          <label className="flex items-center text-white">
-            <span className="mr-2">Sample Overlap</span>
-            <input
-              type="checkbox"
-              checked={sampleOverlap}
-              onChange={() => setSampleOverlap(!sampleOverlap)}
-            />
+          <label className="flex items-center text-white cursor-pointer mb-4">
+            <span className="mr-2 mb-2">Sample Overlap:</span>
+            <span className="relative">
+              <input
+                type="checkbox"
+                className="sr-only"
+                checked={sampleOverlap}
+                onChange={() => setSampleOverlap(!sampleOverlap)}
+              />
+              <span
+                className={`${
+                  sampleOverlap ? "bg-green-400" : "bg-gray-200"
+                } inline-block w-10 h-5 rounded-full transition-colors duration-200 ease-in`}
+              ></span>
+              <span
+                className={`${
+                  sampleOverlap ? "translate-x-6" : "translate-x-0"
+                } absolute inset-y-0 left-0 w-4 h-5 bg-white rounded-full shadow transform transition-transform duration-200 ease-in`}
+              ></span>
+            </span>
           </label>
+
           <span className="text-white mr-2">Musical Key: </span>
           <select
             value={selectedKey}
