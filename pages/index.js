@@ -17,6 +17,7 @@ import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
 
 const Home = () => {
+  const [sliderValues, setSliderValues] = useState({});
   const [sampleOverlap, setSampleOverlap] = useState(false);
   const isLoading = useSelector((state) => state.spotify.isLoading);
   const dispatch = useDispatch();
@@ -39,6 +40,23 @@ const Home = () => {
     setItems(newItems);
   };
 
+  const handleSliderChange = (key, value) => {
+    setSliderValues((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const playAudioFromStartTime = (key) => {
+    const audio = audioRefs.current[key];
+    const startTime = sliderValues[key] || 0;
+    console.log(`Playing audio for key ${key} from start time:`, startTime);
+    if (audio) {
+      audio.currentTime = startTime;
+      audio.play();
+    }
+  };
+
   const validKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
   const hasMounted = useRef(false);
@@ -48,7 +66,7 @@ const Home = () => {
       if (validKeys.includes(e.key)) {
         dispatch(setActiveKey(e.key));
 
-        if (!sampleOverlap) {
+        if (!sampleOverlapRef.current) {
           for (let i = 0; i < 10; i++) {
             if (e.key !== i.toString() && audioRefs.current[i]) {
               audioRefs.current[i].pause();
@@ -57,13 +75,15 @@ const Home = () => {
           }
         }
 
-        if (audioRefs.current[e.key]) {
-          audioRefs.current[e.key].currentTime = 0;
-          audioRefs.current[e.key].play();
+        const startTime = sliderValuesRef.current[e.key] || 0;
+        const audio = audioRefs.current[e.key];
+        if (audio) {
+          audio.currentTime = startTime;
+          audio.play();
         }
       }
     },
-    [selectedKey, sampleOverlap]
+    [selectedKey, validKeys, dispatch]
   );
 
   const handleKeyUp = useCallback(
@@ -107,18 +127,24 @@ const Home = () => {
   }, [sampleOverlap]);
 
   const sampleOverlapRef = useRef(sampleOverlap);
+
   useEffect(() => {
     sampleOverlapRef.current = sampleOverlap;
   }, [sampleOverlap]);
 
+  const sliderValuesRef = useRef(sliderValues);
+
+  useEffect(() => {
+    sliderValuesRef.current = sliderValues;
+  }, [sliderValues]);
+
   const handleClick = (key) => {
-    if (audioRefs.current[key]) {
-      audioRefs.current[key].currentTime = 0;
-      audioRefs.current[key].play();
-      setTimeout(() => {
+    playAudioFromStartTime(key);
+    setTimeout(() => {
+      if (audioRefs.current[key]) {
         audioRefs.current[key].pause();
-      }, 2000);
-    }
+      }
+    }, 2000);
   };
 
   const changeAudio = async (key) => {
@@ -204,7 +230,22 @@ const Home = () => {
         <div className="grid lg:grid-cols-5 grid-cols-3">
           {previewUrls &&
             Object.keys(previewUrls).map((key) => (
-              <div key={key} className="flex flex-col items-center mb-4 mx-2">
+              <div
+                key={key}
+                className="flex flex-col items-center mb-4 mx-2 p-4"
+              >
+                <p className="text-sm text-white mb-2">
+                  Start time: {sliderValues[key] || 0}
+                </p>
+                <input
+                  type="range"
+                  min="0"
+                  max="28"
+                  value={sliderValues[key] || 0}
+                  onChange={(e) => handleSliderChange(key, e.target.value)}
+                  className="w-24"
+                />
+
                 <button
                   className="bg-custom-green text-white text-xs p-2 rounded-full m-2 hover:bg-green-300"
                   onClick={() => changeAudio(key)}
