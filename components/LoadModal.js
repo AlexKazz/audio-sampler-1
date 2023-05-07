@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateState, deleteItem, updateItems } from "../store/spotifySlice";
+import {
+  updateState,
+  deleteItem,
+  updateItems,
+  loadedSampleSet,
+} from "../store/spotifySlice";
 import { getAllLocalStorageItems } from "../utils/localStorageUtils";
 
 const LoadModal = ({ showModal, setShowModal }) => {
@@ -14,7 +19,9 @@ const LoadModal = ({ showModal, setShowModal }) => {
   }, [dispatch]);
 
   const handleClick = (value) => {
+    console.log("Loaded sliderValues:", value.sliderValues);
     dispatch(updateState(value));
+    dispatch(loadedSampleSet(value));
     setShowModal(false);
   };
 
