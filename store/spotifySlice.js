@@ -91,6 +91,7 @@ const initialState = {
   trackInfo: {},
   selectedKey: "C",
   items: [],
+  sliderValues: {},
 };
 
 export const fetchRandomPreviewUrl = createAsyncThunk(
@@ -123,6 +124,7 @@ const spotifySlice = createSlice({
       state.previewUrls = action.payload.previewUrls;
       state.trackInfo = action.payload.trackInfo;
       state.selectedKey = action.payload.selectedKey;
+      state.sliderValues = action.payload.sliderValues;
     },
     updateItems: (state, action) => {
       state.items = action.payload;
@@ -133,6 +135,13 @@ const spotifySlice = createSlice({
       localStorage.removeItem(keyToDelete);
       // Remove the item from the Redux state
       state.items = state.items.filter((item) => item.key !== keyToDelete);
+    },
+    updateSliderValues: (state, action) => {
+      const { key, value } = action.payload;
+      state.sliderValues[key] = value;
+    },
+    loadedSampleSet: (state, action) => {
+      state.loadedSampleSet = action.payload;
     },
   },
 
@@ -164,6 +173,8 @@ export const {
   updateState,
   updateItems,
   deleteItem,
+  updateSliderValues,
+  loadedSampleSet,
 } = spotifySlice.actions;
 
 export default spotifySlice.reducer;
