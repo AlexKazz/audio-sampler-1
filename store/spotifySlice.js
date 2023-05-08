@@ -17,6 +17,22 @@ const keyMapping = {
   B: 11,
 };
 
+const getRandomTrackWithPreview = (tracks, maxAttempts = 10) => {
+  let attempts = 0;
+  let track = null;
+
+  while (attempts < maxAttempts) {
+    const randomIndex = Math.floor(Math.random() * tracks.length);
+    track = tracks[randomIndex];
+    if (track.preview_url) {
+      break;
+    }
+    attempts++;
+  }
+
+  return track;
+};
+
 export const updateTrackInfo = createAction("spotify/updateTrackInfo");
 
 export const fetchPreviewUrls = createAsyncThunk(
@@ -68,14 +84,17 @@ export const fetchPreviewUrls = createAsyncThunk(
         );
 
         const tracks = tracksResponse.data.items.map((item) => item.track);
-        const trackIds = tracks.map((track) => track.id);
-        const randomTrack = (tracks) => {
-          return tracks[Math.floor(Math.random() * tracks.length)];
-        };
 
-        const track = randomTrack(tracks);
-        urls[i] = track.preview_url;
-        trackInfo[i] = { artist: track.artists[0].name, name: track.name };
+        const track = getRandomTrackWithPreview(tracks);
+        if (track) {
+          urls[i] = track.preview_url;
+          trackInfo[i] = { artist: track.artists[0].name, name: track.name };
+        } else {
+          // Handle the case where a track with a preview_url was not found
+          console.error(
+            "No track with preview_url found after multiple attempts"
+          );
+        }
       }
 
       return { previewUrls: urls, trackInfo: trackInfo, isLoading: false };
