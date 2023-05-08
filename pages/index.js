@@ -58,7 +58,6 @@ const Home = () => {
   const playAudioFromStartTime = (key) => {
     const audio = audioRefs.current[key];
     const startTime = sliderValues[key] || 0;
-    console.log(`Playing audio for key ${key} from start time:`, startTime);
     if (audio) {
       audio.currentTime = startTime;
       audio.play();
@@ -96,9 +95,7 @@ const Home = () => {
     [selectedKey, validKeys, dispatch]
   );
 
-  useEffect(() => {
-    console.log("Updated sliderValuesState (useEffect):", sliderValuesState);
-  }, [sliderValuesState]);
+  useEffect(() => {}, [sliderValuesState]);
 
   const handleKeyUp = useCallback(
     (e) => {
@@ -113,6 +110,14 @@ const Home = () => {
     },
     [selectedKey, sampleOverlap]
   );
+
+  useEffect(() => {
+    Object.keys(previewUrls).forEach((key) => {
+      if (audioRefs.current[key]) {
+        audioRefs.current[key].src = previewUrls[key];
+      }
+    });
+  }, [previewUrls]);
 
   useEffect(() => {
     if (!hasMounted.current) {
@@ -244,56 +249,51 @@ const Home = () => {
         {isLoading && <Loading />}
         <div className="grid lg:grid-cols-5 grid-cols-3">
           {previewUrls &&
-            Object.keys(previewUrls).map(
-              (key) => (
-                console.log("sliderValues", sliderValues),
-                (
-                  <div
-                    key={key}
-                    className="flex flex-col items-center mb-4 mx-2 p-4"
-                  >
-                    <p className="text-sm text-white mb-2">
-                      Start time: {sliderValues[key] || 0}
-                    </p>
-                    <input
-                      type="range"
-                      min="0"
-                      max="28"
-                      value={sliderValues[key] || 0}
-                      onChange={(e) => handleSliderChange(key, e.target.value)}
-                      className="w-24"
-                    />
+            Object.keys(previewUrls).map((key) => (
+              <div
+                key={key}
+                className="flex flex-col items-center mb-4 mx-2 p-4"
+              >
+                <p className="text-sm text-white mb-2">
+                  Start time: {sliderValues[key] || 0}
+                </p>
+                <input
+                  type="range"
+                  min="0"
+                  max="28"
+                  value={sliderValues[key] || 0}
+                  onChange={(e) => handleSliderChange(key, e.target.value)}
+                  className="w-24"
+                />
 
-                    <button
-                      className="bg-custom-green text-white text-xs p-2 rounded-full m-2 hover:bg-green-300"
-                      onClick={() => changeAudio(key)}
-                    >
-                      Change
-                    </button>
-                    <button
-                      className={`${
-                        styles.keyButton
-                      } flex items-center justify-center bg-neutral-700 text-white border-2 border-custom-green rounded-xl mb-2 w-12 h-12 text-2xl hover:bg-green-500 focus:bg-custom-green active:bg-custom-green ${
-                        activeKeys[key] ? styles.active : ""
-                      }`}
-                      onClick={() =>
-                        handleClick(key, sliderValuesRef.current[key] || 0)
-                      }
-                    >
-                      {key}
-                      <audio
-                        ref={(el) => (audioRefs.current[key] = el)}
-                        src={previewUrls[key]}
-                      />
-                    </button>
-                    <div className="flex flex-col justify-center text-white text-xs text-center max-h-fit w-36 mx-5 px-5 whitespace-break-spaces">
-                      <div>{trackInfo[key]?.artist}</div>
-                      <div>{trackInfo[key]?.name}</div>
-                    </div>
-                  </div>
-                )
-              )
-            )}
+                <button
+                  className="bg-custom-green text-white text-xs p-2 rounded-full m-2 hover:bg-green-300"
+                  onClick={() => changeAudio(key)}
+                >
+                  Change
+                </button>
+                <button
+                  className={`${
+                    styles.keyButton
+                  } flex items-center justify-center bg-neutral-700 text-white border-2 border-custom-green rounded-xl mb-2 w-12 h-12 text-2xl hover:bg-green-500 focus:bg-custom-green active:bg-custom-green ${
+                    activeKeys[key] ? styles.active : ""
+                  }`}
+                  onClick={() =>
+                    handleClick(key, sliderValuesRef.current[key] || 0)
+                  }
+                >
+                  {key}
+                  <audio
+                    ref={(el) => (audioRefs.current[key] = el)}
+                    src={previewUrls[key]}
+                  />
+                </button>
+                <div className="flex flex-col justify-center text-white text-xs text-center max-h-fit w-36 mx-5 px-5 whitespace-break-spaces">
+                  <div>{trackInfo[key]?.artist}</div>
+                  <div>{trackInfo[key]?.name}</div>
+                </div>
+              </div>
+            ))}
         </div>
         <div className="flex">
           <SaveSamples items={items} updateItems={updateItems} />
