@@ -14,6 +14,7 @@ const SaveModal = ({ showModal, setShowModal }) => {
 
   const handleSave = () => {
     const newState = { ...sampleState, timestamp: Date.now() };
+
     localStorage.setItem(inputValue, JSON.stringify(newState));
     setInputValue("");
 

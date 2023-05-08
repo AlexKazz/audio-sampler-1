@@ -19,7 +19,6 @@ const LoadModal = ({ showModal, setShowModal }) => {
   }, [dispatch]);
 
   const handleClick = (value) => {
-    console.log("Loaded sliderValues:", value.sliderValues);
     dispatch(updateState(value));
     dispatch(loadedSampleSet(value));
     setShowModal(false);
