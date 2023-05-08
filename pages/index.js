@@ -86,7 +86,7 @@ const Home = () => {
         const audio = audioRefs.current[e.key];
         if (audio) {
           audio.currentTime = startTime;
-          audio.play();
+          audio.play().catch(() => {});
 
           dispatch(updateSliderValues({ key: e.key, value: startTime }));
         }
@@ -286,6 +286,7 @@ const Home = () => {
                   <audio
                     ref={(el) => (audioRefs.current[key] = el)}
                     src={previewUrls[key]}
+                    preload="auto"
                   />
                 </button>
                 <div className="flex flex-col justify-center text-white text-xs text-center max-h-fit w-36 mx-5 px-5 whitespace-break-spaces">
