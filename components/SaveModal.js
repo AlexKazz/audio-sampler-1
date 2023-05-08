@@ -28,7 +28,7 @@ const SaveModal = ({ showModal, setShowModal }) => {
         <h2 className="text-xl mb-4 text-center">Name your sample set:</h2>
         <input
           type="text"
-          className="border border-gray-300 p-2 w-full mb-4"
+          className="border border-gray-300 p-2 w-full mb-4 text-black"
           placeholder="Enter sample name"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}

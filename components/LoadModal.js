@@ -46,7 +46,7 @@ const LoadModal = ({ showModal, setShowModal }) => {
             {sortItemsByOldest(items).map((item) => (
               <div
                 key={item.key}
-                className="group flex justify-between hover:bg-slate-200 p-2 border-b-2"
+                className="group flex justify-between hover:bg-slate-200 p-2 border-b-2 text-black"
               >
                 <li onClick={() => handleClick(item.value)} className="">
                   {item.key}
