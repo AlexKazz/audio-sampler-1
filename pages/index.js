@@ -16,6 +16,8 @@ import Sidebar from "@/components/Sidebar";
 import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
 
+const VALID_KEYS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
 const Home = () => {
   const dispatch = useDispatch();
 
@@ -32,10 +34,6 @@ const Home = () => {
   const hasMounted = useRef(false);
   const [sampleOverlap, setSampleOverlap] = useState(false);
   const [sliderValues, setSliderValues] = useState({});
-  const sliderValuesRef = useRef(sliderValues);
-
-
-  const VALID_KEYS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
   useEffect(() => {
     if (loadedSampleSet) {
@@ -79,10 +77,6 @@ const Home = () => {
     };
   }, [sampleOverlap]);
 
-  useEffect(() => {
-    sliderValuesRef.current = sliderValues;
-  }, [sliderValues]);
-
   const handleSliderChange = (key, value) => {
     setSliderValues((prev) => ({
       ...prev,
@@ -104,7 +98,7 @@ const Home = () => {
           }
         }
 
-        const startTime = sliderValuesRef.current[e.key] || 0;
+        const startTime = sliderValues[e.key] || 0;
         const audio = audioRefs.current[e.key];
         if (audio) {
           audio.currentTime = startTime;
@@ -274,7 +268,7 @@ const Home = () => {
                     activeKeys[key] ? styles.active : ""
                   }`}
                   onClick={() =>
-                    handleClick(key, sliderValuesRef.current[key] || 0)
+                    handleClick(key, sliderValues[key] || 0)
                   }
                 >
                   {key}
