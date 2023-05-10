@@ -16,25 +16,114 @@ import Sidebar from "@/components/Sidebar";
 import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
 
+const VALID_KEYS = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
+
 const Home = () => {
-  const [sliderValues, setSliderValues] = useState({});
-  const [sampleOverlap, setSampleOverlap] = useState(false);
-  const isLoading = useSelector((state) => state.spotify.isLoading);
   const dispatch = useDispatch();
+
+  const isLoading = useSelector((state) => state.spotify.isLoading);
   const activeKeys = useSelector((state) => state.spotify.activeKeys);
   const previewUrls = useSelector((state) => state.spotify.previewUrls);
   const trackInfo = useSelector((state) => state.spotify.trackInfo);
   const selectedKey = useSelector((state) => state.spotify.selectedKey);
-  const items = useSelector((state) => state.spotify.items);
-  const audioRefs = useRef({});
-  const sliderValuesState = useSelector((state) => state.spotify.sliderValues);
   const loadedSampleSet = useSelector((state) => state.spotify.loadedSampleSet);
+  const items = useSelector((state) => state.spotify.items);
+
+  const audioRefs = useRef({});
+  const hasMounted = useRef(false);
+
+  const [sampleOverlap, setSampleOverlap] = useState(false);
+  const [sliderValues, setSliderValues] = useState({});
 
   useEffect(() => {
     if (loadedSampleSet) {
       setSliderValues(loadedSampleSet.sliderValues);
     }
   }, [loadedSampleSet]);
+
+  useEffect(() => {
+    Object.keys(previewUrls).forEach((key) => {
+      if (audioRefs.current[key]) {
+        audioRefs.current[key].src = previewUrls[key];
+      }
+    });
+  }, [previewUrls]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+    } else {
+      dispatch(fetchPreviewUrls(selectedKey));
+    }
+  }, [selectedKey]);
+
+  const handleSliderChange = (key, value) => {
+    setSliderValues((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (VALID_KEYS.has(e.key)) {
+        dispatch(setActiveKey(e.key));
+
+        if (!sampleOverlap) {
+          for (let i = 0; i < 10; i++) {
+            if (e.key !== i.toString() && audioRefs.current[i]) {
+              audioRefs.current[i].pause();
+              audioRefs.current[i].currentTime = 0;
+            }
+          }
+        }
+
+        const startTime = sliderValues[e.key] || 0;
+        const audio = audioRefs.current[e.key];
+        if (audio) {
+          dispatch(updateSliderValues({ key: e.key, value: startTime }));
+          audio.currentTime = startTime;
+          audio.play().catch(() => {});
+
+        }
+      }
+    },
+    [selectedKey, VALID_KEYS, dispatch]
+  );
+
+  const handleKeyUp = useCallback(
+    (e) => {
+      if (VALID_KEYS.has(e.key)) {
+        dispatch(clearActiveKey(e.key));
+        if (audioRefs.current[e.key]) {
+          setTimeout(() => {
+            audioRefs.current[e.key].pause();
+          }, 2000);
+        }
+      }
+    },
+    [selectedKey, sampleOverlap]
+  );
+
+  const handleClick = (key, startTime) => {
+    playAudioFromStartTime(key);
+    setTimeout(() => {
+      if (audioRefs.current[key]) {
+        audioRefs.current[key].pause();
+      }
+    }, 2000);
+    dispatch(updateSliderValues({ key, value: startTime }));
+  };
 
   const updateItems = () => {
     const newItems = [];
@@ -48,13 +137,6 @@ const Home = () => {
     setItems(newItems);
   };
 
-  const handleSliderChange = (key, value) => {
-    setSliderValues((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
   const playAudioFromStartTime = (key) => {
     const audio = audioRefs.current[key];
     const startTime = sliderValues[key] || 0;
@@ -62,109 +144,6 @@ const Home = () => {
       audio.currentTime = startTime;
       audio.play();
     }
-  };
-
-  const validKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-  const hasMounted = useRef(false);
-
-  const handleKeyDown = useCallback(
-    (e) => {
-      if (validKeys.includes(e.key)) {
-        dispatch(setActiveKey(e.key));
-
-        if (!sampleOverlapRef.current) {
-          for (let i = 0; i < 10; i++) {
-            if (e.key !== i.toString() && audioRefs.current[i]) {
-              audioRefs.current[i].pause();
-              audioRefs.current[i].currentTime = 0;
-            }
-          }
-        }
-
-        const startTime = sliderValuesRef.current[e.key] || 0;
-        const audio = audioRefs.current[e.key];
-        if (audio) {
-          audio.currentTime = startTime;
-          audio.play().catch(() => {});
-
-          dispatch(updateSliderValues({ key: e.key, value: startTime }));
-        }
-      }
-    },
-    [selectedKey, validKeys, dispatch]
-  );
-
-  useEffect(() => {}, [sliderValuesState]);
-
-  const handleKeyUp = useCallback(
-    (e) => {
-      if (validKeys.includes(e.key)) {
-        dispatch(clearActiveKey(e.key));
-        if (audioRefs.current[e.key]) {
-          setTimeout(() => {
-            audioRefs.current[e.key].pause();
-          }, 2000);
-        }
-      }
-    },
-    [selectedKey, sampleOverlap]
-  );
-
-  useEffect(() => {
-    Object.keys(previewUrls).forEach((key) => {
-      if (audioRefs.current[key]) {
-        audioRefs.current[key].src = previewUrls[key];
-      }
-    });
-  }, [previewUrls]);
-
-  useEffect(() => {
-    if (!hasMounted.current) {
-      hasMounted.current = true;
-    } else {
-      dispatch(fetchPreviewUrls(selectedKey));
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [selectedKey]);
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [sampleOverlap]);
-
-  const sampleOverlapRef = useRef(sampleOverlap);
-
-  useEffect(() => {
-    sampleOverlapRef.current = sampleOverlap;
-  }, [sampleOverlap]);
-
-  const sliderValuesRef = useRef(sliderValues);
-
-  useEffect(() => {
-    sliderValuesRef.current = sliderValues;
-  }, [sliderValues]);
-
-  const handleClick = (key, startTime) => {
-    playAudioFromStartTime(key);
-    setTimeout(() => {
-      if (audioRefs.current[key]) {
-        audioRefs.current[key].pause();
-      }
-    }, 2000);
-    dispatch(updateSliderValues({ key, value: startTime }));
   };
 
   const changeAudio = async (key) => {
@@ -278,9 +257,7 @@ const Home = () => {
                   } flex items-center justify-center bg-neutral-700 text-white border-2 border-custom-green rounded-xl mb-2 w-12 h-12 text-2xl hover:bg-green-500 focus:bg-custom-green active:bg-custom-green ${
                     activeKeys[key] ? styles.active : ""
                   }`}
-                  onClick={() =>
-                    handleClick(key, sliderValuesRef.current[key] || 0)
-                  }
+                  onClick={() => handleClick(key, sliderValues[key] || 0)}
                 >
                   {key}
                   <audio
