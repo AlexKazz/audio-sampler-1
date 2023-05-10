@@ -16,7 +16,7 @@ import Sidebar from "@/components/Sidebar";
 import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
 
-const VALID_KEYS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const VALID_KEYS = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -26,12 +26,12 @@ const Home = () => {
   const previewUrls = useSelector((state) => state.spotify.previewUrls);
   const trackInfo = useSelector((state) => state.spotify.trackInfo);
   const selectedKey = useSelector((state) => state.spotify.selectedKey);
-  const sliderValuesState = useSelector((state) => state.spotify.sliderValues);
   const loadedSampleSet = useSelector((state) => state.spotify.loadedSampleSet);
   const items = useSelector((state) => state.spotify.items);
 
   const audioRefs = useRef({});
   const hasMounted = useRef(false);
+
   const [sampleOverlap, setSampleOverlap] = useState(false);
   const [sliderValues, setSliderValues] = useState({});
 
@@ -40,8 +40,6 @@ const Home = () => {
       setSliderValues(loadedSampleSet.sliderValues);
     }
   }, [loadedSampleSet]);
-
-  useEffect(() => {}, [sliderValuesState]);
 
   useEffect(() => {
     Object.keys(previewUrls).forEach((key) => {
@@ -52,30 +50,22 @@ const Home = () => {
   }, [previewUrls]);
 
   useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!hasMounted.current) {
       hasMounted.current = true;
     } else {
       dispatch(fetchPreviewUrls(selectedKey));
     }
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
   }, [selectedKey]);
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [sampleOverlap]);
 
   const handleSliderChange = (key, value) => {
     setSliderValues((prev) => ({
@@ -86,7 +76,7 @@ const Home = () => {
 
   const handleKeyDown = useCallback(
     (e) => {
-      if (VALID_KEYS.includes(e.key)) {
+      if (VALID_KEYS.has(e.key)) {
         dispatch(setActiveKey(e.key));
 
         if (!sampleOverlap) {
@@ -101,10 +91,10 @@ const Home = () => {
         const startTime = sliderValues[e.key] || 0;
         const audio = audioRefs.current[e.key];
         if (audio) {
+          dispatch(updateSliderValues({ key: e.key, value: startTime }));
           audio.currentTime = startTime;
           audio.play().catch(() => {});
 
-          dispatch(updateSliderValues({ key: e.key, value: startTime }));
         }
       }
     },
@@ -113,7 +103,7 @@ const Home = () => {
 
   const handleKeyUp = useCallback(
     (e) => {
-      if (VALID_KEYS.includes(e.key)) {
+      if (VALID_KEYS.has(e.key)) {
         dispatch(clearActiveKey(e.key));
         if (audioRefs.current[e.key]) {
           setTimeout(() => {
@@ -267,9 +257,7 @@ const Home = () => {
                   } flex items-center justify-center bg-neutral-700 text-white border-2 border-custom-green rounded-xl mb-2 w-12 h-12 text-2xl hover:bg-green-500 focus:bg-custom-green active:bg-custom-green ${
                     activeKeys[key] ? styles.active : ""
                   }`}
-                  onClick={() =>
-                    handleClick(key, sliderValues[key] || 0)
-                  }
+                  onClick={() => handleClick(key, sliderValues[key] || 0)}
                 >
                   {key}
                   <audio
