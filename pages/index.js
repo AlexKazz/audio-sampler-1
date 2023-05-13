@@ -27,7 +27,6 @@ const Home = () => {
   const selectedKey = useSelector((state) => state.spotify.selectedKey);
   const items = useSelector((state) => state.spotify.items);
   const audioRefs = useRef({});
-  const sliderValuesState = useSelector((state) => state.spotify.sliderValues);
   const loadedSampleSet = useSelector((state) => state.spotify.loadedSampleSet);
 
   useEffect(() => {
