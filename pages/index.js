@@ -17,23 +17,71 @@ import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
 
 const Home = () => {
-  const [sliderValues, setSliderValues] = useState({});
-  const [sampleOverlap, setSampleOverlap] = useState(false);
-  const isLoading = useSelector((state) => state.spotify.isLoading);
   const dispatch = useDispatch();
+
+  const isLoading = useSelector((state) => state.spotify.isLoading);
   const activeKeys = useSelector((state) => state.spotify.activeKeys);
   const previewUrls = useSelector((state) => state.spotify.previewUrls);
   const trackInfo = useSelector((state) => state.spotify.trackInfo);
   const selectedKey = useSelector((state) => state.spotify.selectedKey);
-  const items = useSelector((state) => state.spotify.items);
-  const audioRefs = useRef({});
   const loadedSampleSet = useSelector((state) => state.spotify.loadedSampleSet);
+  const items = useSelector((state) => state.spotify.items);
+
+  const [sliderValues, setSliderValues] = useState({});
+  const [sampleOverlap, setSampleOverlap] = useState(false);
+
+  const hasMounted = useRef(false);
+  const audioRefs = useRef({});
+  const sampleOverlapRef = useRef(sampleOverlap);
+  const sliderValuesRef = useRef(sliderValues);
 
   useEffect(() => {
     if (loadedSampleSet) {
       setSliderValues(loadedSampleSet.sliderValues);
     }
   }, [loadedSampleSet]);
+
+  useEffect(() => {
+    Object.keys(previewUrls).forEach((key) => {
+      if (audioRefs.current[key]) {
+        audioRefs.current[key].src = previewUrls[key];
+      }
+    });
+  }, [previewUrls]);
+
+  useEffect(() => {
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+    } else {
+      dispatch(fetchPreviewUrls(selectedKey));
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [selectedKey]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [sampleOverlap]);
+
+  useEffect(() => {
+    sampleOverlapRef.current = sampleOverlap;
+  }, [sampleOverlap]);
+
+  useEffect(() => {
+    sliderValuesRef.current = sliderValues;
+  }, [sliderValues]);
 
   const updateItems = () => {
     const newItems = [];
@@ -64,8 +112,6 @@ const Home = () => {
   };
 
   const validKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-  const hasMounted = useRef(false);
 
   const handleKeyDown = useCallback(
     (e) => {
@@ -107,52 +153,6 @@ const Home = () => {
     },
     [selectedKey, sampleOverlap]
   );
-
-  useEffect(() => {
-    Object.keys(previewUrls).forEach((key) => {
-      if (audioRefs.current[key]) {
-        audioRefs.current[key].src = previewUrls[key];
-      }
-    });
-  }, [previewUrls]);
-
-  useEffect(() => {
-    if (!hasMounted.current) {
-      hasMounted.current = true;
-    } else {
-      dispatch(fetchPreviewUrls(selectedKey));
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [selectedKey]);
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [sampleOverlap]);
-
-  const sampleOverlapRef = useRef(sampleOverlap);
-
-  useEffect(() => {
-    sampleOverlapRef.current = sampleOverlap;
-  }, [sampleOverlap]);
-
-  const sliderValuesRef = useRef(sliderValues);
-
-  useEffect(() => {
-    sliderValuesRef.current = sliderValues;
-  }, [sliderValues]);
 
   const handleClick = (key, startTime) => {
     playAudioFromStartTime(key);
