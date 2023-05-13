@@ -95,8 +95,6 @@ const Home = () => {
     [selectedKey, validKeys, dispatch]
   );
 
-  useEffect(() => {}, [sliderValuesState]);
-
   const handleKeyUp = useCallback(
     (e) => {
       if (validKeys.includes(e.key)) {
