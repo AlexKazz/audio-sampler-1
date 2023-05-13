@@ -16,6 +16,8 @@ import Sidebar from "@/components/Sidebar";
 import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
 
+const validKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
 const Home = () => {
   const dispatch = useDispatch();
 
@@ -83,36 +85,6 @@ const Home = () => {
     sliderValuesRef.current = sliderValues;
   }, [sliderValues]);
 
-  const updateItems = () => {
-    const newItems = [];
-
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      const value = JSON.parse(localStorage.getItem(key));
-      newItems.push({ key, value });
-    }
-
-    setItems(newItems);
-  };
-
-  const handleSliderChange = (key, value) => {
-    setSliderValues((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const playAudioFromStartTime = (key) => {
-    const audio = audioRefs.current[key];
-    const startTime = sliderValues[key] || 0;
-    if (audio) {
-      audio.currentTime = startTime;
-      audio.play();
-    }
-  };
-
-  const validKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
   const handleKeyDown = useCallback(
     (e) => {
       if (validKeys.includes(e.key)) {
@@ -154,6 +126,13 @@ const Home = () => {
     [selectedKey, sampleOverlap]
   );
 
+  const handleSliderChange = (key, value) => {
+    setSliderValues((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
   const handleClick = (key, startTime) => {
     playAudioFromStartTime(key);
     setTimeout(() => {
@@ -162,6 +141,27 @@ const Home = () => {
       }
     }, 2000);
     dispatch(updateSliderValues({ key, value: startTime }));
+  };
+
+  const updateItems = () => {
+    const newItems = [];
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      const value = JSON.parse(localStorage.getItem(key));
+      newItems.push({ key, value });
+    }
+
+    setItems(newItems);
+  };
+
+  const playAudioFromStartTime = (key) => {
+    const audio = audioRefs.current[key];
+    const startTime = sliderValues[key] || 0;
+    if (audio) {
+      audio.currentTime = startTime;
+      audio.play();
+    }
   };
 
   const changeAudio = async (key) => {
