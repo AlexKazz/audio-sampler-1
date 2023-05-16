@@ -28,6 +28,10 @@
   transform: translateY(-2px);
 }
 
+.pushableActiveFront {
+  transform: translateY(-2px);
+}
+
 .keyButton:active,
 .keyButton.active {
   /* background-color: #1DB954; */
