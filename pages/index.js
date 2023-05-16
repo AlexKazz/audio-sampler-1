@@ -264,28 +264,35 @@ const Home = () => {
                 />
 
                 <button
-                  className="bg-custom-green text-white text-xs p-2 rounded-full m-2 hover:bg-green-300"
+                  className="bg-custom-green text-white text-xs p-2 rounded-full m-2 mb-5 hover:bg-green-300"
                   onClick={() => changeAudio(key)}
                 >
                   Change
                 </button>
                 <button
-                  className={`${
-                    styles.keyButton
-                  } flex items-center justify-center bg-neutral-700 text-white border-2 border-custom-green rounded-xl mb-2 w-12 h-12 text-2xl hover:bg-green-500 focus:bg-custom-green active:bg-custom-green ${
-                    activeKeys[key] ? styles.active : ""
+                  className={`${styles.keyButton} ${
+                    styles.pushable
+                  } flex items-center justify-center bg-neutral-700 text-white border-2 border-custom-green rounded-xl mb-2 w-18 h-18 text-2xl ${
+                    activeKeys[key] ? styles.pushableActive : ""
                   }`}
                   onClick={() =>
                     handleClick(key, sliderValuesRef.current[key] || 0)
                   }
                 >
-                  {key}
+                  <span
+                    className={`${styles.front} ${
+                      activeKeys[key] ? styles.pushableActiveFront : ""
+                    }`}
+                  >
+                    {key}
+                  </span>
                   <audio
                     ref={(el) => (audioRefs.current[key] = el)}
                     src={previewUrls[key]}
                     preload="auto"
                   />
                 </button>
+
                 <div className="flex flex-col justify-center text-white text-xs text-center max-h-fit w-36 mx-5 px-5 whitespace-break-spaces">
                   <div>{trackInfo[key]?.artist}</div>
                   <div>{trackInfo[key]?.name}</div>
