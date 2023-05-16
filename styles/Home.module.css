@@ -1,7 +1,7 @@
 .pushable {
   background: hsl(0, 1%, 21%);
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 0;
   cursor: pointer;
 }
@@ -9,11 +9,12 @@
 .front {
   display: block;
   padding: 1rem 2rem;
-  border-radius: 12px;
+  border-radius: 8px;
   font-size: 1.25rem;
   background: hsl(330, 1%, 39%);
   color: white;
-  transform: translateY(-4px);
+  transform: translateY(-8px);
+  transition: transform 200ms;
 }
 
 .pushable:focus:not(:focus-visible) {

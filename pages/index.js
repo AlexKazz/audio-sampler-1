@@ -272,7 +272,7 @@ const Home = () => {
                 <button
                   className={`${styles.keyButton} ${
                     styles.pushable
-                  } flex items-center justify-center bg-neutral-700 text-white border-2 border-custom-green rounded-xl mb-2 w-18 h-18 text-2xl ${
+                  } flex items-center justify-center bg-neutral-700 text-white border-2 border-custom-green rounded-lg mb-2 w-18 h-18 text-2xl ${
                     activeKeys[key] ? styles.pushableActive : ""
                   }`}
                   onClick={() =>
