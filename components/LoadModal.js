@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateState,
@@ -9,7 +9,6 @@ import {
 import { getAllLocalStorageItems } from "../utils/localStorageUtils";
 
 const LoadModal = ({ showModal, setShowModal }) => {
-  const sampleState = useSelector((state) => state.spotify);
   const items = useSelector((state) => state.spotify.items);
   const dispatch = useDispatch();
   // const items = getAllLocalStorageItems();

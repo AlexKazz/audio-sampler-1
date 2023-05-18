@@ -301,8 +301,8 @@ const Home = () => {
             ))}
         </div>
         <div className="flex">
-          <SaveSamples items={items} updateItems={updateItems} />
-          <LoadSamples items={items} updateItems={updateItems} />
+          <SaveSamples updateItems={updateItems} />
+          <LoadSamples />
         </div>
         <Sidebar />
       </main>
