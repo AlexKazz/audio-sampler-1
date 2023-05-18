@@ -27,7 +27,6 @@ const Home = () => {
   const trackInfo = useSelector((state) => state.spotify.trackInfo);
   const selectedKey = useSelector((state) => state.spotify.selectedKey);
   const loadedSampleSet = useSelector((state) => state.spotify.loadedSampleSet);
-  const items = useSelector((state) => state.spotify.items);
 
   const [sliderValues, setSliderValues] = useState({});
   const [sampleOverlap, setSampleOverlap] = useState(false);
@@ -141,18 +140,6 @@ const Home = () => {
       }
     }, 2000);
     dispatch(updateSliderValues({ key, value: startTime }));
-  };
-
-  const updateItems = () => {
-    const newItems = [];
-
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      const value = JSON.parse(localStorage.getItem(key));
-      newItems.push({ key, value });
-    }
-
-    setItems(newItems);
   };
 
   const playAudioFromStartTime = (key) => {
@@ -301,7 +288,7 @@ const Home = () => {
             ))}
         </div>
         <div className="flex">
-          <SaveSamples updateItems={updateItems} />
+          <SaveSamples />
           <LoadSamples />
         </div>
         <Sidebar />
