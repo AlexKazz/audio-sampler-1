@@ -17,4 +17,4 @@ const SaveSamples = () => {
   );
 };
 
-export default SaveSamples;
+export default React.memo(SaveSamples);

@@ -17,4 +17,4 @@ const LoadSamples = () => {
   );
 };
 
-export default LoadSamples;
+export default React.memo(LoadSamples);
