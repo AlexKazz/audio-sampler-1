@@ -16,7 +16,7 @@ import Sidebar from "@/components/Sidebar";
 import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
 
-const validKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const validKeys = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const Home = () => {
 
   const hasMounted = useRef(false);
   const audioRefs = useRef({});
-  const sampleOverlapRef = useRef(sampleOverlap);
+
   const sliderValuesRef = useRef(sliderValues);
 
   useEffect(() => {
@@ -77,19 +77,15 @@ const Home = () => {
   }, [sampleOverlap]);
 
   useEffect(() => {
-    sampleOverlapRef.current = sampleOverlap;
-  }, [sampleOverlap]);
-
-  useEffect(() => {
     sliderValuesRef.current = sliderValues;
   }, [sliderValues]);
 
   const handleKeyDown = useCallback(
     (e) => {
-      if (validKeys.includes(e.key)) {
+      if (validKeys.has(e.key)) {
         dispatch(setActiveKey(e.key));
 
-        if (!sampleOverlapRef.current) {
+        if (!sampleOverlap) {
           for (let i = 0; i < 10; i++) {
             if (e.key !== i.toString() && audioRefs.current[i]) {
               audioRefs.current[i].pause();
@@ -108,12 +104,12 @@ const Home = () => {
         }
       }
     },
-    [selectedKey, validKeys, dispatch]
+    [selectedKey, sampleOverlap]
   );
 
   const handleKeyUp = useCallback(
     (e) => {
-      if (validKeys.includes(e.key)) {
+      if (validKeys.has(e.key)) {
         dispatch(clearActiveKey(e.key));
         if (audioRefs.current[e.key]) {
           setTimeout(() => {
