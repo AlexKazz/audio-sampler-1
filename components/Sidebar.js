@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 
-const Sidebar = ({ theme }) => {
+const Sidebar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
 
   return (
@@ -76,4 +76,4 @@ const Sidebar = ({ theme }) => {
   );
 };
 
-export default Sidebar;
+export default React.memo(Sidebar);

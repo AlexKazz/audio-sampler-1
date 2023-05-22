@@ -16,7 +16,7 @@ import Sidebar from "@/components/Sidebar";
 import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
 
-const validKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const validKeys = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -27,14 +27,13 @@ const Home = () => {
   const trackInfo = useSelector((state) => state.spotify.trackInfo);
   const selectedKey = useSelector((state) => state.spotify.selectedKey);
   const loadedSampleSet = useSelector((state) => state.spotify.loadedSampleSet);
-  const items = useSelector((state) => state.spotify.items);
 
   const [sliderValues, setSliderValues] = useState({});
   const [sampleOverlap, setSampleOverlap] = useState(false);
 
   const hasMounted = useRef(false);
   const audioRefs = useRef({});
-  const sampleOverlapRef = useRef(sampleOverlap);
+
   const sliderValuesRef = useRef(sliderValues);
 
   useEffect(() => {
@@ -78,19 +77,15 @@ const Home = () => {
   }, [sampleOverlap]);
 
   useEffect(() => {
-    sampleOverlapRef.current = sampleOverlap;
-  }, [sampleOverlap]);
-
-  useEffect(() => {
     sliderValuesRef.current = sliderValues;
   }, [sliderValues]);
 
   const handleKeyDown = useCallback(
     (e) => {
-      if (validKeys.includes(e.key)) {
+      if (validKeys.has(e.key)) {
         dispatch(setActiveKey(e.key));
 
-        if (!sampleOverlapRef.current) {
+        if (!sampleOverlap) {
           for (let i = 0; i < 10; i++) {
             if (e.key !== i.toString() && audioRefs.current[i]) {
               audioRefs.current[i].pause();
@@ -109,12 +104,12 @@ const Home = () => {
         }
       }
     },
-    [selectedKey, validKeys, dispatch]
+    [selectedKey, sampleOverlap]
   );
 
   const handleKeyUp = useCallback(
     (e) => {
-      if (validKeys.includes(e.key)) {
+      if (validKeys.has(e.key)) {
         dispatch(clearActiveKey(e.key));
         if (audioRefs.current[e.key]) {
           setTimeout(() => {
@@ -141,18 +136,6 @@ const Home = () => {
       }
     }, 2000);
     dispatch(updateSliderValues({ key, value: startTime }));
-  };
-
-  const updateItems = () => {
-    const newItems = [];
-
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      const value = JSON.parse(localStorage.getItem(key));
-      newItems.push({ key, value });
-    }
-
-    setItems(newItems);
   };
 
   const playAudioFromStartTime = (key) => {
@@ -301,8 +284,8 @@ const Home = () => {
             ))}
         </div>
         <div className="flex">
-          <SaveSamples items={items} updateItems={updateItems} />
-          <LoadSamples items={items} updateItems={updateItems} />
+          <SaveSamples />
+          <LoadSamples />
         </div>
         <Sidebar />
       </main>

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import SaveModal from "./SaveModal";
 
-const SaveSamples = ({ items, updateItems }) => {
+const SaveSamples = () => {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -13,14 +12,9 @@ const SaveSamples = ({ items, updateItems }) => {
       >
         Save Samples
       </button>
-      <SaveModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        items={items}
-        updateItems={updateItems}
-      />
+      <SaveModal showModal={showModal} setShowModal={setShowModal} />
     </div>
   );
 };
 
-export default SaveSamples;
+export default React.memo(SaveSamples);

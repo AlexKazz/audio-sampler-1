@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import LoadModal from "./LoadModal";
 
 const LoadSamples = () => {
@@ -18,4 +17,4 @@ const LoadSamples = () => {
   );
 };
 
-export default LoadSamples;
+export default React.memo(LoadSamples);

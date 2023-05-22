@@ -2,26 +2,8 @@ import { getAccessToken } from "../../lib/spotify";
 import axios from "axios";
 import randomElement from "../../utils/randomElement";
 
-const keyMapping = {
-  C: 0,
-  "C#": 1,
-  D: 2,
-  "D#": 3,
-  E: 4,
-  F: 5,
-  "F#": 6,
-  G: 7,
-  "G#": 8,
-  A: 9,
-  "A#": 10,
-  B: 11,
-};
-
 const handler = async (req, res) => {
   if (req.method === "GET") {
-    const selectedKey = req.query.selectedKey;
-    const selectedPitchClass = keyMapping[selectedKey];
-
     try {
       const accessToken = await getAccessToken();
       if (!accessToken) {
