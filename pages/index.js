@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { supabase } from "../lib/initSupabase";
+import Modal from "react-modal";
 import styles from "../styles/Home.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "../components/Loading";
@@ -30,6 +32,12 @@ const Home = () => {
 
   const [sliderValues, setSliderValues] = useState({});
   const [sampleOverlap, setSampleOverlap] = useState(false);
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const [isSignupModalOpen, setSignupModalOpen] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const hasMounted = useRef(false);
   const audioRefs = useRef({});
@@ -160,8 +168,119 @@ const Home = () => {
     dispatch(updateTrackInfo({ key: fetchedKey, trackInfo }));
   };
 
+  const handleLogin = async (email, password) => {
+    const { error } = await supabase.auth.signIn({ email, password });
+    if (error) setError(error.message);
+  };
+
+  const handleSignup = async (email, password) => {
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) setError(error.message);
+  };
+
   return (
     <div className="bg-custom-black min-h-screen max-w-full min-w-full p-10">
+      <button
+        onClick={() => setLoginModalOpen(true)}
+        className="text-white mr-2"
+      >
+        Login
+      </button>
+      <button onClick={() => setSignupModalOpen(true)} className="text-white">
+        Signup
+      </button>
+
+      <Modal
+        isOpen={isLoginModalOpen}
+        onRequestClose={() => setLoginModalOpen(false)}
+        className="fixed inset-0 z-50 flex items-center justify-center"
+      >
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+          <h2 className="text-xl mb-4 text-center">Login</h2>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin(email, password);
+            }}
+          >
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              className="border border-gray-300 p-2 w-full mb-4 text-black"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className="border border-gray-300 p-2 w-full mb-4 text-black"
+            />
+            <div className="flex justify-evenly">
+              <button
+                type="submit"
+                className="bg-custom-green text-white px-4 py-2 rounded mt-4 mr- hover:bg-green-400"
+              >
+                Submit
+              </button>
+              <button
+                onClick={() => setLoginModalOpen(false)}
+                className="border border-black text-black px-4 py-2 rounded mt-4 hover:bg-slate-400"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+          {error && <p className="text-red-600">{error}</p>}
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isSignupModalOpen}
+        onRequestClose={() => setSignupModalOpen(false)}
+        className="fixed inset-0 z-50 flex items-center justify-center"
+      >
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+          <h2 className="text-xl mb-4 text-center">Signup</h2>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSignup(email, password);
+            }}
+          >
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              className="border border-gray-300 p-2 w-full mb-4 text-black"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className="border border-gray-300 p-2 w-full mb-4 text-black"
+            />
+            <div className="flex justify-evenly">
+              <button
+                type="submit"
+                className="bg-custom-green text-white px-4 py-2 rounded mt-4 mr- hover:bg-green-400"
+              >
+                Submit
+              </button>
+              <button
+                onClick={() => setSignupModalOpen(false)}
+                className="border border-black text-black px-4 py-2 rounded mt-4 hover:bg-slate-400"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+          {error && <p className="text-red-600">{error}</p>}
+        </div>
+      </Modal>
       <div>
         <title>Spotify Audio Sampler</title>
         <meta
