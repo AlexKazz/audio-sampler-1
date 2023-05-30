@@ -38,6 +38,8 @@ const Home = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [signupError, setSignupError] = useState("");
 
   const hasMounted = useRef(false);
   const audioRefs = useRef({});
@@ -87,6 +89,22 @@ const Home = () => {
   useEffect(() => {
     sliderValuesRef.current = sliderValues;
   }, [sliderValues]);
+
+  useEffect(() => {
+    if (!isLoginModalOpen) {
+      setEmail("");
+      setPassword("");
+      setLoginError("");
+    }
+  }, [isLoginModalOpen]);
+
+  useEffect(() => {
+    if (!isSignupModalOpen) {
+      setEmail("");
+      setPassword("");
+      setSignupError("");
+    }
+  }, [isSignupModalOpen]);
 
   const handleKeyDown = useCallback(
     (e) => {
@@ -169,13 +187,21 @@ const Home = () => {
   };
 
   const handleLogin = async (email, password) => {
-    const { error } = await supabase.auth.signIn({ email, password });
-    if (error) setError(error.message);
+    try {
+      const { user, error } = await supabase.auth.signIn({ email, password });
+      if (error) throw error;
+    } catch (error) {
+      setLoginError("Enter a valid email and password");
+    }
   };
 
   const handleSignup = async (email, password) => {
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) setError(error.message);
+    try {
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) throw error;
+    } catch (error) {
+      setSignupError("Enter a valid email and password");
+    }
   };
 
   return (
@@ -192,8 +218,14 @@ const Home = () => {
 
       <Modal
         isOpen={isLoginModalOpen}
-        onRequestClose={() => setLoginModalOpen(false)}
+        onRequestClose={() => {
+          setLoginModalOpen(false);
+          setEmail("");
+          setPassword("");
+          setLoginError("");
+        }}
         className="fixed inset-0 z-50 flex items-center justify-center"
+        // ariaHideApp={false}
       >
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
           <h2 className="text-xl mb-4 text-center">Login</h2>
@@ -232,14 +264,24 @@ const Home = () => {
               </button>
             </div>
           </form>
-          {error && <p className="text-red-600">{error}</p>}
+          <div className="form-error">
+            {loginError && (
+              <div className="flex justify-center items-center text-red-600 mt-4">
+                {loginError}
+              </div>
+            )}
+          </div>
         </div>
       </Modal>
 
       <Modal
         isOpen={isSignupModalOpen}
-        onRequestClose={() => setSignupModalOpen(false)}
+        onRequestClose={() => {
+          setSignupModalOpen(false);
+          setSignupError("");
+        }}
         className="fixed inset-0 z-50 flex items-center justify-center"
+        // ariaHideApp={false}
       >
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
           <h2 className="text-xl mb-4 text-center">Signup</h2>
@@ -278,7 +320,11 @@ const Home = () => {
               </button>
             </div>
           </form>
-          {error && <p className="text-red-600">{error}</p>}
+          {signupError && (
+            <div className="flex justify-center items-center text-red-600 mt-4">
+              {signupError}
+            </div>
+          )}
         </div>
       </Modal>
       <div>
