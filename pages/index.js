@@ -161,7 +161,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-custom-black min-h-screen max-w-full min-w-full p-10">
+    <div className="bg-black min-h-screen max-w-full min-w-full p-10">
       <div>
         <title>Spotify Audio Sampler</title>
         <meta
@@ -189,7 +189,7 @@ const Home = () => {
               />
               <span
                 className={`${
-                  sampleOverlap ? "bg-green-400" : "bg-gray-200"
+                  sampleOverlap ? "bg-green-400" : "bg-neutral-600"
                 } inline-block w-10 h-5 rounded-full transition-colors duration-200 ease-in`}
               ></span>
               <span
@@ -202,6 +202,7 @@ const Home = () => {
 
           <span className="text-white mr-2">Musical Key: </span>
           <select
+            className="bg-neutral-600 text-white"
             value={selectedKey}
             onChange={(e) => dispatch(setSelectedKey(e.target.value))}
           >
@@ -221,7 +222,7 @@ const Home = () => {
         </div>
 
         <button
-          className="bg-custom-green text-white text-sm font-bold p-2 rounded m-4 hover:bg-green-300"
+          className="bg-custom-green text-black text-sm font-bold p-2 rounded m-4 hover:bg-green-300"
           onClick={() => dispatch(fetchPreviewUrls(selectedKey))}
         >
           Get New Audio
@@ -247,7 +248,7 @@ const Home = () => {
                 />
 
                 <button
-                  className="bg-custom-green text-white text-xs p-2 rounded-full m-2 mb-5 hover:bg-green-300"
+                  className="bg-custom-green text-black text-xs font-bold p-2 rounded-full m-2 mb-5 hover:bg-green-300"
                   onClick={() => changeAudio(key)}
                 >
                   Change
