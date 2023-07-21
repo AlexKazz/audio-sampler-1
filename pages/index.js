@@ -277,7 +277,14 @@ const Home = () => {
                       activeKeys[key] ? styles.pushableActiveFront : ""
                     }`}
                   >
-                    {trackInfo[key] && trackInfo[key].albumImageUrl ? (
+                    {isLoading ? (
+                      <Skeleton
+                        width={"100%"}
+                        height={"100%"}
+                        color="#202020"
+                        highlightColor="#444"
+                      />
+                    ) : trackInfo[key] && trackInfo[key].albumImageUrl ? (
                       <img
                         src={trackInfo[key].albumImageUrl}
                         alt="Album cover"
