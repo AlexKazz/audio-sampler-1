@@ -280,7 +280,7 @@ const Home = () => {
                     {isLoading ? (
                       <Skeleton
                         width={"100%"}
-                        height={"100%"}
+                        height={"90%"}
                         color="#202020"
                         highlightColor="#444"
                       />
