@@ -208,6 +208,7 @@ const Home = () => {
 
           <span className="text-white mr-2">Musical Key: </span>
           <select
+            aria-label="Select musical key"
             className="bg-neutral-600 text-white"
             value={selectedKey}
             onChange={(e) => dispatch(setSelectedKey(e.target.value))}
@@ -252,6 +253,7 @@ const Home = () => {
                   value={sliderValues[key] || 0}
                   onChange={(e) => handleSliderChange(key, e.target.value)}
                   className="w-24"
+                  aria-label={`Slider control for ${key}`}
                 />
 
                 <button
