@@ -1,4 +1,3 @@
-// _app.js
 import { Provider } from "react-redux";
 import { store } from "../store/store";
 import "../styles/globals.css";

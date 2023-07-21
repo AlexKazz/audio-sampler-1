@@ -1,7 +1,5 @@
-// localStorageUtils.js
 export const getAllLocalStorageItems = () => {
   if (typeof window === "undefined") {
-    // Not on the client-side, return an empty array
     return [];
   }
 

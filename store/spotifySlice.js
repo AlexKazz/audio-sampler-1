@@ -82,9 +82,8 @@ export const fetchPreviewUrls = createAsyncThunk(
             },
           }
         );
-        // console.log(tracksResponse.data);
+
         const tracks = tracksResponse.data.items.map((item) => {
-          // console.log(item.track.album.images[0].url);
           return item.track;
         });
 
@@ -178,9 +177,7 @@ const spotifySlice = createSlice({
     },
     deleteItem: (state, action) => {
       const keyToDelete = action.payload;
-      // Remove the item from local storage
       localStorage.removeItem(keyToDelete);
-      // Remove the item from the Redux state
       state.items = state.items.filter((item) => item.key !== keyToDelete);
     },
     updateSliderValues: (state, action) => {
@@ -207,8 +204,8 @@ const spotifySlice = createSlice({
         state.previewUrls[key] = newPreviewUrl;
       })
       .addCase(updateTrackInfo, (state, action) => {
-        const { key, trackInfo } = action.payload; // Get the key from the action payload
-        state.trackInfo[key] = trackInfo; // Update only the track information for the specific key
+        const { key, trackInfo } = action.payload;
+        state.trackInfo[key] = trackInfo;
       });
   },
 });

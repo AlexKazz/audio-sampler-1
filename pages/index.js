@@ -162,8 +162,6 @@ const Home = () => {
       trackInfo,
     } = actionResult.payload;
 
-    console.log("Track Info:", trackInfo.albumImageUrl);
-
     dispatch(updatePreviewUrl({ key: fetchedKey, newPreviewUrl }));
     dispatch(updateTrackInfo({ key: fetchedKey, trackInfo }));
   };
