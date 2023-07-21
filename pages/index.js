@@ -162,6 +162,8 @@ const Home = () => {
       trackInfo,
     } = actionResult.payload;
 
+    console.log("Track Info:", trackInfo.albumImageUrl);
+
     dispatch(updatePreviewUrl({ key: fetchedKey, newPreviewUrl }));
     dispatch(updateTrackInfo({ key: fetchedKey, trackInfo }));
   };
@@ -275,7 +277,25 @@ const Home = () => {
                       activeKeys[key] ? styles.pushableActiveFront : ""
                     }`}
                   >
-                    {key}
+                    {isLoading ? (
+                      <Skeleton
+                        width={"100%"}
+                        height={"90%"}
+                        color="#202020"
+                        highlightColor="#444"
+                      />
+                    ) : trackInfo[key] && trackInfo[key].albumImageUrl ? (
+                      <>
+                        <img
+                          src={trackInfo[key].albumImageUrl}
+                          alt="Album cover"
+                          style={{ width: "100%", height: "100%" }}
+                        />
+                        <div className={styles.overlay}>{key}</div>
+                      </>
+                    ) : (
+                      key
+                    )}
                   </span>
                   <audio
                     ref={(el) => (audioRefs.current[key] = el)}

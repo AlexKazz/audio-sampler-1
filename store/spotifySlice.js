@@ -82,15 +82,21 @@ export const fetchPreviewUrls = createAsyncThunk(
             },
           }
         );
-
-        const tracks = tracksResponse.data.items.map((item) => item.track);
+        // console.log(tracksResponse.data);
+        const tracks = tracksResponse.data.items.map((item) => {
+          // console.log(item.track.album.images[0].url);
+          return item.track;
+        });
 
         const track = getRandomTrackWithPreview(tracks);
         if (track) {
           urls[i] = track.preview_url;
-          trackInfo[i] = { artist: track.artists[0].name, name: track.name };
+          trackInfo[i] = {
+            artist: track.artists[0].name,
+            name: track.name,
+            albumImageUrl: track.album.images[0].url,
+          };
         } else {
-          // Handle the case where a track with a preview_url was not found
           console.error(
             "No track with preview_url found after multiple attempts"
           );
@@ -118,7 +124,18 @@ const initialState = {
     8: "",
     9: "",
   },
-  trackInfo: {},
+  trackInfo: {
+    0: { artist: "", name: "", albumImageUrl: "" },
+    1: { artist: "", name: "", albumImageUrl: "" },
+    2: { artist: "", name: "", albumImageUrl: "" },
+    3: { artist: "", name: "", albumImageUrl: "" },
+    4: { artist: "", name: "", albumImageUrl: "" },
+    5: { artist: "", name: "", albumImageUrl: "" },
+    6: { artist: "", name: "", albumImageUrl: "" },
+    7: { artist: "", name: "", albumImageUrl: "" },
+    8: { artist: "", name: "", albumImageUrl: "" },
+    9: { artist: "", name: "", albumImageUrl: "" },
+  },
   selectedKey: "C",
   items: [],
   sliderValues: {},
