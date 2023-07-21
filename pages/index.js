@@ -285,11 +285,14 @@ const Home = () => {
                         highlightColor="#444"
                       />
                     ) : trackInfo[key] && trackInfo[key].albumImageUrl ? (
-                      <img
-                        src={trackInfo[key].albumImageUrl}
-                        alt="Album cover"
-                        style={{ width: "100%", height: "100%" }}
-                      />
+                      <>
+                        <img
+                          src={trackInfo[key].albumImageUrl}
+                          alt="Album cover"
+                          style={{ width: "100%", height: "100%" }}
+                        />
+                        <div className={styles.overlay}>{key}</div>
+                      </>
                     ) : (
                       key
                     )}
