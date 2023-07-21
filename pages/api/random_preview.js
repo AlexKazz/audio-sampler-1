@@ -41,7 +41,7 @@ const handler = async (req, res) => {
           },
         }
       );
-
+      // console.log(tracksResponse.data);
       const tracks = tracksResponse.data.items.map((item) => item.track);
 
       let track;
@@ -49,6 +49,7 @@ const handler = async (req, res) => {
 
       while (!previewUrl && tracks.length > 0) {
         track = randomElement(tracks);
+        console.log(track);
         previewUrl = track.preview_url;
         if (!previewUrl) {
           tracks.splice(tracks.indexOf(track), 1);
@@ -62,7 +63,11 @@ const handler = async (req, res) => {
         );
         res.status(200).json({
           previewUrl,
-          trackInfo: { artist: track.artists[0].name, name: track.name },
+          trackInfo: {
+            artist: track.artists[0].name,
+            name: track.name,
+            albumImageUrl: track.album.images[0].url,
+          },
         });
       } else {
         res.status(500).json({ error: "No tracks with preview URLs found" });

@@ -162,6 +162,8 @@ const Home = () => {
       trackInfo,
     } = actionResult.payload;
 
+    console.log("Track Info:", trackInfo.albumImageUrl);
+
     dispatch(updatePreviewUrl({ key: fetchedKey, newPreviewUrl }));
     dispatch(updateTrackInfo({ key: fetchedKey, trackInfo }));
   };
@@ -275,7 +277,15 @@ const Home = () => {
                       activeKeys[key] ? styles.pushableActiveFront : ""
                     }`}
                   >
-                    {key}
+                    {trackInfo[key] && trackInfo[key].albumImageUrl ? (
+                      <img
+                        src={trackInfo[key].albumImageUrl}
+                        alt="Album cover"
+                        style={{ width: "100%", height: "100%" }}
+                      />
+                    ) : (
+                      key
+                    )}
                   </span>
                   <audio
                     ref={(el) => (audioRefs.current[key] = el)}

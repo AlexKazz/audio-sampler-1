@@ -8,7 +8,7 @@
 
 .front {
   display: block;
-  padding: 1rem 2rem;
+  padding: 0.2rem 0.4rem;
   border-radius: 8px;
   font-size: 1.25rem;
   background: hsl(330, 1%, 39%);
