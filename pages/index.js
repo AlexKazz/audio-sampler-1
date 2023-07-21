@@ -230,7 +230,7 @@ const Home = () => {
           Get New Audio
         </button>
 
-        {/* {isLoading && <Loading />} */}
+        {isLoading && <Loading />}
         <div className="grid lg:grid-cols-5 grid-cols-3">
           {previewUrls &&
             Object.keys(previewUrls).map((key) => (

@@ -106,7 +106,18 @@ export const fetchPreviewUrls = createAsyncThunk(
 
 const initialState = {
   activeKeys: {},
-  previewUrls: {},
+  previewUrls: {
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: "",
+    6: "",
+    7: "",
+    8: "",
+    9: "",
+  },
   trackInfo: {},
   selectedKey: "C",
   items: [],
