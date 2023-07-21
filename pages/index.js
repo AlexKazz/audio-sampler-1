@@ -39,6 +39,10 @@ const Home = () => {
   const sliderValuesRef = useRef(sliderValues);
 
   useEffect(() => {
+    dispatch(fetchPreviewUrls(selectedKey));
+  }, []);
+
+  useEffect(() => {
     if (loadedSampleSet) {
       setSliderValues(loadedSampleSet.sliderValues);
     }
