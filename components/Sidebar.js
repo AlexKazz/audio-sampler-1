@@ -8,7 +8,7 @@ const Sidebar = () => {
     <>
       {showSidebar ? (
         <button
-          className={`flex text-3xl  bg-custom-black text-white
+          className={`flex text-3xl  bg-black text-white
            hover:text-custom-green items-center cursor-pointer fixed right-10 top-6 z-50`}
           onClick={() => setShowSidebar(!showSidebar)}
         >
@@ -28,7 +28,7 @@ const Sidebar = () => {
       )}
 
       <div
-        className={`overflow-y-auto top-0 right-0 md:w-5/12 shadow shadow-white bg-custom-black text-white
+        className={`overflow-y-auto top-0 right-0 md:w-5/12 shadow shadow-white bg-black text-white
           p-10 pl-20 fixed h-full z-40 ease-in-out duration-300
         ${showSidebar ? "translate-x-0 " : "translate-x-full"}`}
       >

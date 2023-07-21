@@ -56,6 +56,10 @@ const handler = async (req, res) => {
       }
 
       if (previewUrl) {
+        res.setHeader(
+          "Cache-Control",
+          "s-maxage=86400, stale-while-revalidate"
+        );
         res.status(200).json({
           previewUrl,
           trackInfo: { artist: track.artists[0].name, name: track.name },
