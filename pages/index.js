@@ -15,6 +15,8 @@ import {
 import Sidebar from "@/components/Sidebar";
 import SaveSamples from "@/components/SaveSamples";
 import LoadSamples from "@/components/LoadSamples";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const validKeys = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 
@@ -227,7 +229,8 @@ const Home = () => {
         >
           Get New Audio
         </button>
-        {isLoading && <Loading />}
+
+        {/* {isLoading && <Loading />} */}
         <div className="grid lg:grid-cols-5 grid-cols-3">
           {previewUrls &&
             Object.keys(previewUrls).map((key) => (
@@ -278,8 +281,30 @@ const Home = () => {
                 </button>
 
                 <div className="flex flex-col justify-center text-white text-xs text-center max-h-fit w-36 mx-5 px-5 whitespace-break-spaces">
-                  <div>{trackInfo[key]?.artist}</div>
-                  <div>{trackInfo[key]?.name}</div>
+                  <div>
+                    {isLoading ? (
+                      <Skeleton
+                        width={"80%"}
+                        height={15}
+                        color="#202020"
+                        highlightColor="#444"
+                      />
+                    ) : (
+                      trackInfo[key]?.artist
+                    )}
+                  </div>
+                  <div>
+                    {isLoading ? (
+                      <Skeleton
+                        width={"80%"}
+                        height={15}
+                        color="#202020"
+                        highlightColor="#444"
+                      />
+                    ) : (
+                      trackInfo[key]?.name
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
