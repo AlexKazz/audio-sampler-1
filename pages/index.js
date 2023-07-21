@@ -180,7 +180,7 @@ const Home = () => {
         <p className="text-white text-2xl mb-10">Spotify Audio Sampler</p>
 
         <p className="mb-10 text-white text-center italic">
-          Press the corresponding keys on your keyboard to play a short audio
+          Press the numbered keys 0-9 on your keyboard to play a short audio
           clip from Spotify.
         </p>
         <div>
@@ -291,7 +291,7 @@ const Home = () => {
                           alt="Album cover"
                           style={{ width: "100%", height: "100%" }}
                         />
-                        <div className={styles.overlay}>{key}</div>
+                        {/* <div className={styles.overlay}>{key}</div> */}
                       </>
                     ) : (
                       key

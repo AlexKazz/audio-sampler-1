@@ -7,9 +7,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.3); /* adjust as needed */
+  background: rgba(0, 0, 0, .3);
   color: white;
-  font-size: 2rem; /* adjust as needed */
+  font-size: 3rem;
 }
 
 
